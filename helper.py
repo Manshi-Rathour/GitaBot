@@ -33,16 +33,16 @@ chain = LLMChain(llm=llm, prompt=prompt)
 
 
 def chatbot_response(query):
-    # Generate a response using the LangChain model
-    response = chain.run(input=query, max_tokens=100)
-
-    # Format the response for better readability
-    formatted_response = response.replace("\\n", "\n").replace("\n\n", "\n").strip()
-
-    return {"Response": formatted_response}
+    try:
+        response = chain.run(input=query, max_tokens=100)
+        formatted_response = response.replace("\\n", "\n").replace("\n\n", "\n").strip()
+        return {"Response": formatted_response}
+    except Exception as e:
+        print(f"Error generating response: {str(e)}")
+        return {"Response": "Sorry, I can't answer this query!"}
 
 
 if __name__ == "__main__":
-    query = "how can I find inner peace?"
+    query = "How can I overcome feelings of anger?"
     response_data = chatbot_response(query)
     print(response_data["Response"].replace("\n", "\n\n"))

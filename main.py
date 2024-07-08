@@ -10,7 +10,6 @@ def main():
     if st.button("Get Response"):
         if query:
             response_data = chatbot_response(query)
-            st.subheader("Lord Krishna's Response:")
 
             formatted_response = response_data["Response"].replace("\n", "\n\n")
 
