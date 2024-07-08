@@ -43,6 +43,6 @@ def chatbot_response(query):
 
 
 if __name__ == "__main__":
-    query = "i love someone but that person doesnt loves me"
+    query = "how can I find inner peace?"
     response_data = chatbot_response(query)
     print(response_data["Response"].replace("\n", "\n\n"))
