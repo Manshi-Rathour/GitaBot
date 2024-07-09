@@ -25,7 +25,7 @@ def main():
     st.markdown("<h1 style='text-align: center; color: gold;'>Discover Wisdom with Lord Krishna</h1>", unsafe_allow_html=True)
     st.markdown("<p style='text-align: center; color: white;'>Seek guidance from the timeless teachings of the Bhagavad Gita</p>", unsafe_allow_html=True)
 
-    st.image("img/feather.png", use_column_width=True, caption="")
+    st.image("img/feather.png", width=300, caption="")
 
     # Input query area
     st.markdown("<h3 style='color: white;'>Ask your query:</h3>", unsafe_allow_html=True)
