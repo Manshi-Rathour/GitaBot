@@ -27,7 +27,7 @@ def main():
 
     # Input query area
     st.markdown("<h3 style='color: white;'>Ask your query:</h3>", unsafe_allow_html=True)
-    query = st.text_area("", placeholder="Enter your question here...")
+    query = st.text_area("Query", placeholder="Enter your question here...", label_visibility="collapsed")
 
     # Button to get response
     if st.button("Get Response"):
