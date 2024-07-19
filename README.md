@@ -1,5 +1,3 @@
-### README.md
-
 # GitaBot
 
 ## Introduction
