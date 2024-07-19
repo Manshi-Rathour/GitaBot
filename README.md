@@ -23,4 +23,4 @@ To utilize GitaBot locally:
 Thank you for choosing GitaBot! We hope you find clarity and wisdom through our application. Your journey towards spiritual and mental well-being is our priority.
 
 ## Preview
-[Preview GitaBot](Visit: https://gita-bot.streamlit.app/)
+[Preview GitaBot](https://gita-bot.streamlit.app/)
