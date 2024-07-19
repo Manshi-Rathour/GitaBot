@@ -15,9 +15,9 @@ def main():
     page_bg_img = '''
     <style>
     body {
-    background-image: url("img/bg.png");
-    background-size: cover;
-    color: white;
+        background-image: url("img/bg.png");
+        background-size: cover;
+        color: white;
     }
     .stButton>button {
         background-color: gold;
@@ -36,6 +36,14 @@ def main():
         margin: auto;
         width: 50%;
         text-align: center;
+        margin-bottom: 10px
+    }
+    .subtitle {
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: auto;
+        margin-bottom: 10px;
     }
     </style>
     '''
@@ -61,7 +69,8 @@ def main():
             # Display sentiment analysis
             sentiment_box = f"""
             <div class="sentiment-box">
-                <h4 style='color: gold;'>Sentiment Analysis</h4>
+                <h3 style='color: gold;'>Sentiment Evaluation</h3>
+                <h4 class="subtitle" style=' text-align: center'>Understanding the Emotional Tone</h4>
                 <p>Compound: {compound:.2f}%</p>
                 <p>Negative: {neg:.2f}%</p>
                 <p>Neutral: {neu:.2f}%</p>
@@ -74,7 +83,8 @@ def main():
             # Generate chatbot response
             response_data = chatbot_response(query)
             formatted_response = response_data["Response"].replace("\n", "\n\n")
-            st.markdown("<h3 style='color: white;'>Response:</h3>", unsafe_allow_html=True)
+            st.markdown("<h3 style='color: white;'>Wisdom from the Bhagavad Gita</h3>", unsafe_allow_html=True)
+            st.markdown("<p class='subtitle'>Guidance Based on Your Query</p>", unsafe_allow_html=True)
             st.write(formatted_response)
 
 
