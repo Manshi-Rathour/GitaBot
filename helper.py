@@ -1,3 +1,9 @@
+import nltk
+from nltk.sentiment import SentimentIntensityAnalyzer
+
+# Download the VADER lexicon
+nltk.download('vader_lexicon')
+
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain_google_genai import GoogleGenerativeAI
@@ -41,6 +47,39 @@ def chatbot_response(query):
         print(f"Error generating response: {str(e)}")
         return {"Response": "Sorry, I can't answer this query!"}
 
+
+def analyze_sentiment_vader(query):
+    # Initialize the VADER sentiment intensity analyzer
+    sia = SentimentIntensityAnalyzer()
+
+    # Get the sentiment scores
+    sentiment_scores = sia.polarity_scores(query)
+
+    # Extract the sentiment components
+    compound = sentiment_scores['compound']
+    neg = sentiment_scores['neg']
+    neu = sentiment_scores['neu']
+    pos = sentiment_scores['pos']
+
+    # Convert sentiment scores to percentage
+    compound_percentage = (compound + 1) * 50
+    neg_percentage = neg * 100
+    neu_percentage = neu * 100
+    pos_percentage = pos * 100
+
+    # Generate a sentiment message
+    if (pos_percentage > neg_percentage) and (pos_percentage > neu_percentage):
+        sentiment_message = "This query has a positive sentiment."
+    elif (neu_percentage > pos_percentage) and (neu_percentage > neg_percentage):
+        sentiment_message = "This query has a neutral sentiment."
+    else:
+        sentiment_message = "This query has a negative sentiment."
+
+    # Format the response
+    response = (f"Compound: {compound_percentage:.2f}%, Negative: {neg_percentage:.2f}%, "
+                f"Neutral: {neu_percentage:.2f}%, Positive: {pos_percentage:.2f}%")
+
+    return response, compound_percentage, neg_percentage, neu_percentage, pos_percentage, sentiment_message
 
 if __name__ == "__main__":
     query = "How can I overcome feelings of anger?"
