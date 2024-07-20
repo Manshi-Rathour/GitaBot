@@ -67,13 +67,13 @@ def analyze_sentiment_vader(query):
     neu_percentage = neu * 100
     pos_percentage = pos * 100
 
-    # Generate a sentiment message
-    if (pos_percentage > neg_percentage) and (pos_percentage > neu_percentage):
+    # Generate a sentiment message based on the compound score
+    if compound >= 0.05:
         sentiment_message = "This query has a positive sentiment."
-    elif (neu_percentage > pos_percentage) and (neu_percentage > neg_percentage):
-        sentiment_message = "This query has a neutral sentiment."
-    else:
+    elif compound <= -0.05:
         sentiment_message = "This query has a negative sentiment."
+    else:
+        sentiment_message = "This query has a neutral sentiment."
 
     # Format the response
     response = (f"Compound: {compound_percentage:.2f}%, Negative: {neg_percentage:.2f}%, "
