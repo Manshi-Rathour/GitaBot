@@ -118,7 +118,6 @@ def main():
                 col1, col2 = st.columns([7, 3])
 
                 with col1:
-                    st.markdown("<h3 style='color: white;'>Wisdom from the Bhagavad Gita</h3>", unsafe_allow_html=True)
                     st.markdown("<p class='subtitle'>Guidance Based on Your Query</p>", unsafe_allow_html=True)
                     st.markdown(formatted_response)
 
