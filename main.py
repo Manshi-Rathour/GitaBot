@@ -1,14 +1,35 @@
 import streamlit as st
 from PIL import Image
+import base64
 from helper import chatbot_response, analyze_sentiment_vader
+
+
+def get_base64(file_path):
+    """Encode image to Base64."""
+    with open(file_path, "rb") as img_file:
+        return base64.b64encode(img_file.read()).decode()
+
+
+def set_background(png_file):
+    """Set background image using Base64 encoding."""
+    bin_str = get_base64(png_file)
+    page_bg_img = '''
+    <style>
+    .stApp {
+        background-image: url("data:image/png;base64,%s");
+        background-size: cover;
+        background-repeat: repeat;
+        background-attachment: fixed;
+    }
+    </style>
+    ''' % bin_str
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+
 
 def main():
     # Load the custom icon and image
     feather_icon = Image.open("img/feather.png")
-    # Load the image you want to display below the title
-    bot_image = Image.open("img/bot_image.jpg")  # Replace with your image file name
-
-    # Resize the image to 400x200
+    bot_image = Image.open("img/bot_image.jpg")
     bot_image = bot_image.resize((400, 200))
 
     # Set the page configuration
@@ -19,11 +40,13 @@ def main():
         initial_sidebar_state="expanded"
     )
 
-    # Adding custom CSS
+    # Set background image
+    set_background('img/bg.png')  # Path to your background image
+
+    # Adding other CSS styling for elements
     page_styles = '''
         <style>
         body {
-            background-color: #121212;
             color: white;
             display: flex;
             justify-content: center;
@@ -63,7 +86,6 @@ def main():
             display: flex;
             justify-content: center;
             align-items: center;
-            # margin: 20px 0;
         }
         .image-container img {
             border-radius: 15px;
@@ -75,15 +97,8 @@ def main():
     # Main container
     with st.container():
         # Title and description
-        st.markdown("<h1 style='text-align: center; color: gold;'>Discover Wisdom with Lord Krishna</h1>",
-                    unsafe_allow_html=True)
-        st.markdown(
-            "<p style='text-align: center; color: white;'>Seek guidance from the timeless teachings of the Bhagavad Gita</p>",
-            unsafe_allow_html=True)
-
-        # st.markdown("<div class='image-container'>", unsafe_allow_html=True)
-        # st.image(bot_image)
-        # st.markdown("</div>", unsafe_allow_html=True)
+        st.markdown("<h1 style='text-align: center; color: gold;'>Discover Wisdom with Lord Krishna</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; color: white;'>Seek guidance from the timeless teachings of the Bhagavad Gita</p>", unsafe_allow_html=True)
 
         # Input query area
         st.markdown("<h3 style='color: white;'>Ask your query:</h3>", unsafe_allow_html=True)
@@ -121,7 +136,6 @@ def main():
                     """
                     st.markdown(sentiment_box, unsafe_allow_html=True)
 
-        st.markdown('</div>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
