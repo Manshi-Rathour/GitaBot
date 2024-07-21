@@ -12,7 +12,7 @@ GitaBot is an advanced interactive chatbot designed to impart wisdom and guidanc
 ## Usage
 To utilize GitaBot locally:
 
-1. **Clone the Repository**: `git clone [(https://github.com/Manshi-Rathour/GitaBot) or (https://github.com/sSumankumari/GitaBot)]`
+1. **Clone the Repository**: `git clone https://github.com/sSumankumari/GitaBot`
    
 3. **Set Up a Virtual Environment**:
    Create and activate a virtual environment for dependency management:
