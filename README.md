@@ -12,12 +12,22 @@ GitaBot is an advanced interactive chatbot designed to impart wisdom and guidanc
 ## Usage
 To utilize GitaBot locally:
 
-1. **Clone the Repository**: Obtain the source code from the repository.
-2. **Set Up a Virtual Environment**: Create and activate a virtual environment for dependency management.
-3. **Install Dependencies**: Use the `requirements.txt` file to install necessary packages.
-4. **Configure API Keys**: Set up your API keys in a `.env` file for seamless integration.
-5. **Download NLTK Data**: Ensure the necessary NLTK data is downloaded for sentiment analysis.
-6. **Run the Application**: Launch the application using Streamlit for an interactive experience.
+1. **Clone the Repository**: `git clone https://github.com/Manshi-Rathour/GitaBot`
+   
+3. **Set Up a Virtual Environment**:
+   Create and activate a virtual environment for dependency management:
+   - `python -m venv venv`
+   - On Windows: `venv\Scripts\activate`
+   - On macOS/Linux: `source venv/bin/activate`
+   
+4. **Install Dependencies**: Install the necessary packages using the `requirements.txt` file:
+   - `pip install -r requirements.txt`
+     
+5. **Configure API Keys**: Set up your API keys in a `.env` file. Create a `.env` file in the root directory and add the following line:
+   - `GOOGLE_GENERATIVE_LANGUAGE_API_KEY=your_api_key_here`
+     
+6. **Run the Application**: Launch the application using Streamlit:
+    - `streamlit run main.py`
 
 ## Acknowledgements
 Thank you for choosing GitaBot! We hope you find clarity and wisdom through our application. Your journey towards spiritual and mental well-being is our priority.
