@@ -58,11 +58,11 @@ Interact with GitaBot:
 - Enter your query and receive guidance based on the Bhagavad Gita.
 
 ## Contributors
-- **Manshi Rathour** - [GitHub Profile](https://github.com/Manshi-Rathour)
-- **Sumankumari** - [GitHub Profile](https://github.com/sSumankumari)
+- **Manshi Rathour** - <a href="https://github.com/Manshi-Rathour" target="_blank">GitHub Profile</a>
+- **Sumankumari** - <a href="https://github.com/sSumankumari" target="_blank">GitHub Profile</a>
 
 ## Acknowledgements
 Thank you for choosing GitaBot! We hope you find clarity and wisdom through our application. Your journey towards spiritual and mental well-being is our priority.
 
 ## Preview
-[Preview GitaBot](https://gita-bot.streamlit.app/)
+<a href="https://gita-bot.streamlit.app/" target="_blank">Preview GitaBot</a>
