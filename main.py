@@ -29,8 +29,8 @@ def set_background(png_file):
 def main():
     # Load the custom icon and image
     feather_icon = Image.open("img/feather.png")
-    bot_image = Image.open("img/bot_image.jpg")
-    bot_image = bot_image.resize((400, 200))
+    bot_image = Image.open("img/bot_image.jpeg")
+    bot_image = bot_image.resize((300, 300))
 
     # Set the page configuration
     st.set_page_config(
@@ -82,13 +82,11 @@ def main():
             font-weight: bold;
             margin: 10px 0;
         }
-        .image-container {
+        .centered-image {
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        .image-container img {
-            border-radius: 15px;
+            width: 100%;
         }
         </style>
         '''
@@ -99,6 +97,11 @@ def main():
         # Title and description
         st.markdown("<h1 style='text-align: center; color: gold;'>Discover Wisdom with Lord Krishna</h1>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center; color: white;'>Seek guidance from the timeless teachings of the Bhagavad Gita</p>", unsafe_allow_html=True)
+
+        # Display bot image
+        st.markdown("<div class='centered-image'>", unsafe_allow_html=True)
+        st.image(bot_image, width=300, caption="")
+        st.markdown("</div>", unsafe_allow_html=True)
 
         # Input query area
         st.markdown("<h3 style='color: white;'>Ask your query:</h3>", unsafe_allow_html=True)
