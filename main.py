@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 import base64
+from io import BytesIO
 from helper import chatbot_response, analyze_sentiment_vader
 
 
@@ -26,11 +27,18 @@ def set_background(png_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
 
+def image_to_base64(image):
+    buffered = BytesIO()
+    image.save(buffered, format="JPEG")
+    return base64.b64encode(buffered.getvalue()).decode()
+
+
 def main():
     # Load the custom icon and image
     feather_icon = Image.open("img/feather.png")
     bot_image = Image.open("img/bot_image.jpeg")
     bot_image = bot_image.resize((300, 300))
+    bot_image_base64 = image_to_base64(bot_image)
 
     # Set the page configuration
     st.set_page_config(
@@ -81,6 +89,9 @@ def main():
             font-size: 18px;
             font-weight: bold;
             margin: 10px 0;
+            text-align: center;
+            border-bottom: 2px solid gold; 
+            padding-bottom: 5px; 
         }
         .centered-image {
             display: flex;
@@ -98,10 +109,13 @@ def main():
         st.markdown("<h1 style='text-align: center; color: gold;'>Discover Wisdom with Lord Krishna</h1>", unsafe_allow_html=True)
         st.markdown("<p style='text-align: center; color: white;'>Seek guidance from the timeless teachings of the Bhagavad Gita</p>", unsafe_allow_html=True)
 
-        # Display bot image
-        st.markdown("<div class='centered-image'>", unsafe_allow_html=True)
-        st.image(bot_image, width=300, caption="")
-        st.markdown("</div>", unsafe_allow_html=True)
+        # Display the centered image using HTML
+        image_html = f"""
+        <div class='centered-image'>
+            <img src='data:image/jpeg;base64,{bot_image_base64}' width='300' />
+        </div>
+        """
+        st.markdown(image_html, unsafe_allow_html=True)
 
         # Input query area
         st.markdown("<h3 style='color: white;'>Ask your query:</h3>", unsafe_allow_html=True)
