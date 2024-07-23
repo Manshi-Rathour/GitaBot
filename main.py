@@ -2,8 +2,11 @@ import streamlit as st
 from PIL import Image
 import base64
 from io import BytesIO
+import logging
 from helper import chatbot_response, analyze_sentiment_vader
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 def get_base64(file_path):
     """Encode image to Base64."""
@@ -125,11 +128,15 @@ def main():
         if st.button("Get Response"):
             if query:
                 try:
+                    logging.info(f"Received query: {query}")
+
                     # Perform sentiment analysis
                     sentiment_response, compound, neg, neu, pos, sentiment_message = analyze_sentiment_vader(query)
+                    logging.info("Sentiment analysis complete")
 
                     # Generate chatbot response
                     response_data = chatbot_response(query)
+                    logging.info("Chatbot response received")
                     formatted_response = response_data["Response"].replace("\n", "\n\n")
 
                     # Store results in session state
@@ -143,6 +150,7 @@ def main():
                         'message': sentiment_message
                     }
                 except Exception as e:
+                    logging.error(f"An error occurred: {e}")
                     st.error(f"An error occurred: {e}")
 
         # Display the response if available
