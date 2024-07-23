@@ -124,33 +124,53 @@ def main():
         # Button to get response
         if st.button("Get Response"):
             if query:
-                # Perform sentiment analysis
-                sentiment_response, compound, neg, neu, pos, sentiment_message = analyze_sentiment_vader(query)
+                try:
+                    # Perform sentiment analysis
+                    sentiment_response, compound, neg, neu, pos, sentiment_message = analyze_sentiment_vader(query)
 
-                # Generate chatbot response
-                response_data = chatbot_response(query)
-                formatted_response = response_data["Response"].replace("\n", "\n\n")
+                    # Generate chatbot response
+                    response_data = chatbot_response(query)
+                    formatted_response = response_data["Response"].replace("\n", "\n\n")
 
-                # Display sentiment analysis and response in columns
-                col1, col2 = st.columns([7, 3])
+                    # Store results in session state
+                    st.session_state['query'] = query
+                    st.session_state['response'] = formatted_response
+                    st.session_state['sentiment'] = {
+                        'compound': compound,
+                        'neg': neg,
+                        'neu': neu,
+                        'pos': pos,
+                        'message': sentiment_message
+                    }
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
 
-                with col1:
-                    st.markdown("<p class='subtitle'>Guidance Based on Your Query</p>", unsafe_allow_html=True)
-                    st.markdown(formatted_response)
+        # Display the response if available
+        if 'response' in st.session_state:
+            query = st.session_state.get('query', '')
+            formatted_response = st.session_state.get('response', '')
+            sentiment = st.session_state.get('sentiment', {})
 
-                with col2:
-                    sentiment_box = f"""
-                    <div class="sentiment-box">
-                        <h3 style='color: gold;'>Sentiment Evaluation</h3>
-                        <h4 class="subtitle" style=' text-align: center'>Understanding the Emotional Tone</h4>
-                        <p>Compound: {compound:.2f}</p>
-                        <p>Negative: {neg:.2f}</p>
-                        <p>Neutral: {neu:.2f}</p>
-                        <p>Positive: {pos:.2f}</p>
-                        <p>{sentiment_message}</p>
-                    </div>
-                    """
-                    st.markdown(sentiment_box, unsafe_allow_html=True)
+            # Display sentiment analysis and response in columns
+            col1, col2 = st.columns([7, 3])
+
+            with col1:
+                st.markdown("<p class='subtitle'>Guidance Based on Your Query</p>", unsafe_allow_html=True)
+                st.markdown(formatted_response)
+
+            with col2:
+                sentiment_box = f"""
+                <div class="sentiment-box">
+                    <h3 style='color: gold;'>Sentiment Evaluation</h3>
+                    <h4 class="subtitle" style=' text-align: center'>Understanding the Emotional Tone</h4>
+                    <p>Compound: {sentiment.get('compound', 0):.2f}</p>
+                    <p>Negative: {sentiment.get('neg', 0):.2f}</p>
+                    <p>Neutral: {sentiment.get('neu', 0):.2f}</p>
+                    <p>Positive: {sentiment.get('pos', 0):.2f}</p>
+                    <p>{sentiment.get('message', '')}</p>
+                </div>
+                """
+                st.markdown(sentiment_box, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
