@@ -1,7 +1,7 @@
 # GitaBot
 
 ## Introduction
-GitaBot is an advanced interactive chatbot designed to impart wisdom and guidance from the timeless teachings of the Bhagavad Gita. Leveraging modern AI and sentiment analysis techniques, GitaBot provides insightful responses to user queries, reflecting the teachings of Lord Krishna. This unique integration of spiritual guidance and technology offers users a profound and personalized experience.
+Welcome to **GitaBot**, an advanced interactive chatbot designed to impart wisdom and guidance from the timeless teachings of the Bhagavad Gita. By leveraging modern AI and sentiment analysis techniques, GitaBot provides insightful responses to user queries, reflecting the teachings of Lord Krishna. This unique integration of spiritual guidance and technology offers users a profound and personalized experience.
 
 ## Features
 - **Interactive Chatbot**: Engage in meaningful conversations and receive responses rooted in the Bhagavad Gita's wisdom.
@@ -10,7 +10,7 @@ GitaBot is an advanced interactive chatbot designed to impart wisdom and guidanc
 - **Visually Appealing Interface**: Enjoy a user-friendly and visually captivating interface designed with Streamlit.
 
 ## Installation
-To utilize GitaBot locally:
+To utilize GitaBot locally, follow these steps:
 
 1. **Clone the Repository**:
    ```bash
@@ -56,6 +56,14 @@ To utilize GitaBot locally:
 Interact with GitaBot:
 - Open your browser and go to `http://localhost:8501`
 - Enter your query and receive guidance based on the Bhagavad Gita.
+
+### Prompt Examples
+
+- "I feel anxious about my future. What should I do?"
+- "How can I find inner peace?"
+- "What does the Bhagavad Gita say about handling stress?"
+- "I am facing a moral dilemma. Can you help?"
+- "What is the significance of karma according to the Gita?"
 
 ## Contributors
 - **Manshi Rathour** - <a href="https://github.com/Manshi-Rathour" target="_blank">GitHub Profile</a>
