@@ -4,12 +4,10 @@ import base64
 from io import BytesIO
 from helper import chatbot_response, analyze_sentiment_vader
 
-
 def get_base64(file_path):
     """Encode image to Base64."""
     with open(file_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
-
 
 def set_background(png_file):
     """Set background image using Base64 encoding."""
@@ -26,12 +24,10 @@ def set_background(png_file):
     ''' % bin_str
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
-
 def image_to_base64(image):
     buffered = BytesIO()
     image.save(buffered, format="JPEG")
     return base64.b64encode(buffered.getvalue()).decode()
-
 
 def main():
     # Load the custom icon and image
@@ -99,6 +95,9 @@ def main():
             align-items: center;
             width: 100%;
         }
+        .formated-response-container {
+            color: white;
+        }
         </style>
         '''
     st.markdown(page_styles, unsafe_allow_html=True)
@@ -132,6 +131,9 @@ def main():
                     response_data = chatbot_response(query)
                     formatted_response = response_data["Response"].replace("\n", "\n\n")
 
+                    # Remove asterisks from the response
+                    formatted_response = formatted_response.replace("**", "")
+
                     # Store results in session state
                     st.session_state['query'] = query
                     st.session_state['response'] = formatted_response
@@ -156,7 +158,12 @@ def main():
 
             with col1:
                 st.markdown("<p class='subtitle'>Guidance Based on Your Query</p>", unsafe_allow_html=True)
-                st.markdown(formatted_response)
+                response_container = f"""
+                <div class="formated-response-container">
+                    <p>{formatted_response}</p>
+                </div>
+                """
+                st.markdown(response_container, unsafe_allow_html=True)
 
             with col2:
                 sentiment_box = f"""
@@ -171,7 +178,6 @@ def main():
                 </div>
                 """
                 st.markdown(sentiment_box, unsafe_allow_html=True)
-
 
 if __name__ == "__main__":
     main()
