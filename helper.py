@@ -2,7 +2,7 @@ import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 
 # Download the VADER lexicon
-nltk.download('vader_lexicon')
+# nltk.download('vader_lexicon')
 
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
