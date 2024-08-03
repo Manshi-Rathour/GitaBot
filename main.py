@@ -2,7 +2,8 @@ import streamlit as st
 from PIL import Image
 import base64
 from io import BytesIO
-from helper import generate_response, analyze_sentiment_vader
+from helper import generate_response
+from sentiment_helper import analyze_sentiment_vader
 import warnings
 import logging
 
