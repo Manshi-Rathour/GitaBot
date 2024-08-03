@@ -2,7 +2,8 @@ import streamlit as st
 from PIL import Image
 import base64
 from io import BytesIO
-from helper import chatbot_response, analyze_sentiment_vader
+from helper import chatbot_response
+from sentiment_helper import analyze_sentiment_vader
 
 
 def get_base64(file_path):
@@ -99,7 +100,7 @@ def main():
             align-items: center;
             width: 100%;
         }
-        .formated-response-container {
+        .formatted-response-container {
             color: white;
         }
         </style>
@@ -135,9 +136,6 @@ def main():
                     response_data = chatbot_response(query)
                     formatted_response = response_data["Response"].replace("\n", "\n\n")
 
-                    # Remove asterisks from the response
-                    formatted_response = formatted_response.replace("**", "")
-
                     # Store results in session state
                     st.session_state['query'] = query
                     st.session_state['response'] = formatted_response
@@ -163,7 +161,7 @@ def main():
             with col1:
                 st.markdown("<p class='subtitle'>Guidance Based on Your Query</p>", unsafe_allow_html=True)
                 response_container = f"""
-                <div class="formated-response-container">
+                <div class="formatted-response-container">
                     <p>{formatted_response}</p>
                 </div>
                 """
@@ -173,11 +171,11 @@ def main():
                 sentiment_box = f"""
                 <div class="sentiment-box">
                     <h3 style='color: gold;'>Sentiment Evaluation</h3>
-                    <h4 class="subtitle" style=' text-align: center'>Understanding the Emotional Tone</h4>
-                    <p>Compound: {sentiment.get('compound', 0):.2f}</p>
-                    <p>Negative: {sentiment.get('neg', 0):.2f}</p>
-                    <p>Neutral: {sentiment.get('neu', 0):.2f}</p>
-                    <p>Positive: {sentiment.get('pos', 0):.2f}</p>
+                    <h4 class="subtitle" style='text-align: center'>Understanding the Emotional Tone</h4>
+                    <p><strong>Compound:</strong> {sentiment.get('compound', 0):.2f}%</p>
+                    <p><strong>Negative:</strong> {sentiment.get('neg', 0):.2f}%</p>
+                    <p><strong>Neutral:</strong> {sentiment.get('neu', 0):.2f}%</p>
+                    <p><strong>Positive:</strong> {sentiment.get('pos', 0):.2f}%</p>
                     <p>{sentiment.get('message', '')}</p>
                 </div>
                 """
