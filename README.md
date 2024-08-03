@@ -57,13 +57,37 @@ Interact with GitaBot:
 - Open your browser and go to `http://localhost:8501`
 - Enter your query and receive guidance based on the Bhagavad Gita.
 
-### Prompt Examples
+## Prompt Examples
 
+### Personal Guidance and Inner Peace
 - "I feel anxious about my future. What should I do?"
 - "How can I find inner peace?"
 - "What does the Bhagavad Gita say about handling stress?"
 - "I am facing a moral dilemma. Can you help?"
+- "How can I find inner peace according to the Bhagavad Gita?"
+- "How do I maintain a positive attitude during tough times?"
+- "What does the Bhagavad Gita say about overcoming negativity?"
+- "Can you help me understand how to handle stress based on the Gita?"
+
+### Teachings and Concepts of the Bhagavad Gita
+- "What is the main message of the Bhagavad Gita?"
+- "Can you explain the concept of Dharma in the Bhagavad Gita?"
+- "What is Karma Yoga?"
 - "What is the significance of karma according to the Gita?"
+- "How can I apply the teachings of the Bhagavad Gita to modern life?"
+- "What is the significance of meditation in the Bhagavad Gita?"
+- "Can you explain the role of a teacher in the Bhagavad Gita?"
+- "How does the Bhagavad Gita address the concept of attachment?"
+
+### Moral and Philosophical Inquiries
+- "I am facing a moral dilemma. Can you help?"
+- "What is the significance of karma according to the Gita?"
+- "How can I apply the teachings of the Bhagavad Gita to modern life?"
+- "What is the significance of meditation in the Bhagavad Gita?"
+- "Can you explain the role of a teacher in the Bhagavad Gita?"
+- "How does the Bhagavad Gita address the concept of attachment?"
+
+
 
 ## Contributors
 - **Manshi Rathour** - <a href="https://github.com/Manshi-Rathour" target="_blank">GitHub Profile</a>
