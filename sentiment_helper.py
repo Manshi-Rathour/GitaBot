@@ -4,6 +4,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 # Download the VADER lexicon if not already downloaded
 nltk.download('vader_lexicon')
 
+
 def analyze_sentiment_vader(query):
     # Initialize the VADER sentiment intensity analyzer
     sia = SentimentIntensityAnalyzer()
@@ -42,6 +43,7 @@ def analyze_sentiment_vader(query):
 
     return response, compound_percentage, neg_percentage, neu_percentage, pos_percentage, sentiment_message
 
+
 def gita_bot_response(user_query):
     response, compound_percentage, neg_percentage, neu_percentage, pos_percentage, sentiment_message = analyze_sentiment_vader(user_query)
 
@@ -49,6 +51,7 @@ def gita_bot_response(user_query):
     sentiment_feedback = sentiment_message
 
     return f"{response}\n\nSentiment Feedback: {sentiment_feedback}"
+
 
 # Example usage
 user_query = "I am feeling enlightened after reading the Bhagavad Gita!"
