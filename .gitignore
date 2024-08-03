@@ -1,14 +1,3 @@
-# Ignore Python bytecode
-__pycache__/
-
 # Ignore environment files
 .env
 venv/
-
-# Ignore model files
-model/
-sentiment_analysis.py
-helper.py
-
-# Ignore IDE/editor specific files
-.idea/
