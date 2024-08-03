@@ -4,16 +4,21 @@ import base64
 from io import BytesIO
 from helper import generate_response, analyze_sentiment_vader
 import warnings
+import logging
 
 # Suppress deprecation warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def get_base64(file_path):
     """Encode image to Base64."""
     with open(file_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
-
 
 def set_background(png_file):
     """Set background image using Base64 encoding."""
@@ -30,12 +35,10 @@ def set_background(png_file):
     ''' % bin_str
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
-
 def image_to_base64(image):
     buffered = BytesIO()
     image.save(buffered, format="JPEG")
     return base64.b64encode(buffered.getvalue()).decode()
-
 
 def main():
     # Load the custom icon and image
@@ -165,7 +168,7 @@ def main():
                             'message': sentiment_message
                         }
                     else:
-                        # If no valid response
+                        logger.warning("Empty response received from generate_response")
                         st.session_state['general_response'] = "Sorry, I can't answer this query."
                         st.session_state['dataset_response'] = ""
                         st.session_state['shloka_id'] = ""
@@ -180,6 +183,7 @@ def main():
                             'message': "N/A"
                         }
                 except Exception as e:
+                    logger.error(f"Exception during query processing: {e}", exc_info=True)
                     st.session_state['general_response'] = "Sorry, I can't answer this query."
                     st.session_state['dataset_response'] = ""
                     st.session_state['shloka_id'] = ""
