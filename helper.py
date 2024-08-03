@@ -114,40 +114,6 @@ def generate_response(query, use_dataset=True):
         }
 
 
-# def analyze_sentiment_vader(query):
-#     # Initialize the VADER sentiment intensity analyzer
-#     sia = SentimentIntensityAnalyzer()
-#
-#     # Get the sentiment scores
-#     sentiment_scores = sia.polarity_scores(query)
-#
-#     # Extract the sentiment components
-#     compound = sentiment_scores['compound']
-#     neg = sentiment_scores['neg']
-#     neu = sentiment_scores['neu']
-#     pos = sentiment_scores['pos']
-#
-#     # Convert sentiment scores to percentage
-#     compound_percentage = (compound + 1) * 50
-#     neg_percentage = neg * 100
-#     neu_percentage = neu * 100
-#     pos_percentage = pos * 100
-#
-#     # Generate a sentiment message based on the compound score
-#     if compound >= 0.05:
-#         sentiment_message = "This query has a positive sentiment."
-#     elif compound <= -0.05:
-#         sentiment_message = "This query has a negative sentiment."
-#     else:
-#         sentiment_message = "This query has a neutral sentiment."
-#
-#     # Format the response
-#     response = (f"Compound: {compound_percentage:.2f}%, Negative: {neg_percentage:.2f}%, "
-#                 f"Neutral: {neu_percentage:.2f}%, Positive: {pos_percentage:.2f}%")
-#
-#     return response, compound_percentage, neg_percentage, neu_percentage, pos_percentage, sentiment_message
-
-
 if __name__ == "__main__":
     query = "How can I find inner peace?"
     result = generate_response(query)
