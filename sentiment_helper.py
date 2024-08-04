@@ -1,15 +1,16 @@
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
-from transformers import pipeline
+from transformers import pipeline, T5Tokenizer, T5ForConditionalGeneration
 
-# Download the VADER lexicon if not already downloaded
+# Uncomment the line below if the VADER lexicon is not already downloaded
 # nltk.download('vader_lexicon')
 
-# Initialize Hugging Face text generation pipeline
-text_generator = pipeline("text-generation", model="gpt2")
+# Initialize T5 model and tokenizer
+tokenizer = T5Tokenizer.from_pretrained("t5-small")
+model = T5ForConditionalGeneration.from_pretrained("t5-small")
 
 def analyze_sentiment_vader(text):
-    """Analyze sentiment using VADER and generate detailed feedback using Hugging Face model."""
+    """Analyze sentiment using VADER and generate short messages using T5 model."""
     analyzer = SentimentIntensityAnalyzer()
     sentiment_scores = analyzer.polarity_scores(text)
 
@@ -26,45 +27,41 @@ def analyze_sentiment_vader(text):
     else:
         sentiment_message = "Neutral"
 
-    detailed_feedback = generate_detailed_feedback(text, sentiment_message)
+    short_message = generate_short_message(text, sentiment_message)
 
-    return sentiment_scores, compound, neg, neu, pos, sentiment_message, detailed_feedback
+    return sentiment_scores, compound, neg, neu, pos, sentiment_message, short_message
 
 def generate_short_message(user_query, sentiment_message):
-    """Generate a short message based on sentiment."""
+    """Generate a short message based on sentiment using T5 model."""
     if sentiment_message == 'Negative':
-        prompt = f"Generate a short and uplifting message to help someone who is feeling down: {user_query}"
+        prompt = f"Generate a short and uplifting message to help someone who is feeling down. User query: {user_query}"
     elif sentiment_message == 'Positive':
-        prompt = f"Generate a short motivational message to reinforce someone's positive feelings: {user_query}"
+        prompt = f"Generate a short motivational message to reinforce someone's positive feelings. User query: {user_query}"
     else:  # Neutral sentiment
-        prompt = f"Generate a short, informative message for someone with a neutral sentiment: {user_query}"
+        prompt = f"Generate a short, informative message for someone with a neutral sentiment. User query: {user_query}"
 
-    # Generate the response
-    response = text_generator(prompt, max_length=200, num_return_sequences=1, truncation=True)
+    # Prepare the input text
+    input_text = prompt
+    input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=512, truncation=True)
 
-    # Extract the generated text from the response
-    generated_text = response[0]['generated_text'].strip()
+    # Generate the message
+    output_ids = model.generate(input_ids, max_length=50, num_return_sequences=1, early_stopping=True, num_beams=5)
+    generated_text = tokenizer.decode(output_ids[0], skip_special_tokens=True)
 
     return generated_text
 
-def generate_detailed_feedback(user_query, sentiment_message):
-    """Generate detailed feedback based on the user's query and sentiment analysis result."""
-    # Generate motivational or informative response based on sentiment
-    detailed_feedback = generate_short_message(user_query, sentiment_message)
-
-    return detailed_feedback
-
 def gita_bot_response(user_query):
-    """Generate a response based on sentiment analysis and provide detailed feedback."""
-    sentiment_scores, compound, neg, neu, pos, sentiment_message, detailed_feedback = analyze_sentiment_vader(
-        user_query)
+    """Generate a response based on sentiment analysis and provide a short message."""
+    sentiment_scores, compound, neg, neu, pos, sentiment_message, short_message = analyze_sentiment_vader(user_query)
 
     # Generate a response based on sentiment
-    sentiment_feedback = f"Sentiment Feedback: {sentiment_message}\n\nDetailed Feedback: {detailed_feedback}"
+    sentiment_feedback = f"Sentiment Feedback: {sentiment_message}\n\nShort Message: {short_message}"
 
     return sentiment_feedback
 
 # Example usage
 if __name__ == "__main__":
+    user_query = "What is the significance of meditation in the Bhagavad Gita?"
     user_query = "I am feeling enlightened after reading the Bhagavad Gita!"
+
     print(gita_bot_response(user_query))
