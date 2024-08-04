@@ -143,7 +143,7 @@ def main():
             if query:
                 try:
                     # Perform sentiment analysis
-                    sentiment_response, compound, neg, neu, pos, sentiment_message = analyze_sentiment_vader(query)
+                    sentiment_scores, compound, neg, neu, pos, sentiment_message, detailed_feedback = analyze_sentiment_vader(query)
 
                     # Generate chatbot response
                     response_data = generate_response(query)
@@ -169,7 +169,8 @@ def main():
                             'neg': neg,
                             'neu': neu,
                             'pos': pos,
-                            'message': sentiment_message
+                            'message': sentiment_message,
+                            'detailed_feedback': detailed_feedback
                         }
                     else:
                         logger.warning("Empty response received from generate_response")
@@ -184,7 +185,8 @@ def main():
                             'neg': 0,
                             'neu': 0,
                             'pos': 0,
-                            'message': "N/A"
+                            'message': "N/A",
+                            'detailed_feedback': "N/A"
                         }
                 except Exception as e:
                     logger.error(f"Exception during query processing: {e}", exc_info=True)
@@ -199,7 +201,8 @@ def main():
                         'neg': 0,
                         'neu': 0,
                         'pos': 0,
-                        'message': "N/A"
+                        'message': "N/A",
+                        'detailed_feedback': "N/A"
                     }
                     # Clear the default error message
                     st.markdown("<p style='color: transparent;'>An error occurred: list index out of range</p>",
@@ -271,7 +274,8 @@ def main():
                         <p>Negative: {sentiment.get('neg', 0):.2f}</p>
                         <p>Neutral: {sentiment.get('neu', 0):.2f}</p>
                         <p>Positive: {sentiment.get('pos', 0):.2f}</p>
-                        <p>{sentiment.get('message', '')}</p>
+                        <p><b>Sentiment Message: </b> {sentiment.get('message', '')}</p>
+                        <p><b>Detailed Feedback: </b> {sentiment.get('detailed_feedback', '')}</p>                    
                     </div>
                     """
                     st.markdown(sentiment_box, unsafe_allow_html=True)
