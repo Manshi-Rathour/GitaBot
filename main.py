@@ -3,7 +3,7 @@ from PIL import Image
 import base64
 from io import BytesIO
 from helper import generate_response
-from sentiment_helper import analyze_sentiment_vader
+from sentiment_helper import analyze_sentiment_vader, generate_learning_message
 import warnings
 import logging
 
@@ -143,7 +143,8 @@ def main():
             if query:
                 try:
                     # Perform sentiment analysis
-                    sentiment_scores, compound, neg, neu, pos, sentiment_message, detailed_feedback = analyze_sentiment_vader(query)
+                    sentiment_scores, compound, neg, neu, pos, sentiment_message, short_message = analyze_sentiment_vader(query)
+                    learning_message = generate_learning_message(sentiment_message)
 
                     # Generate chatbot response
                     response_data = generate_response(query)
@@ -170,7 +171,8 @@ def main():
                             'neu': neu,
                             'pos': pos,
                             'message': sentiment_message,
-                            'detailed_feedback': detailed_feedback
+                            'short_message': short_message,
+                            'learning_message': learning_message
                         }
                     else:
                         logger.warning("Empty response received from generate_response")
@@ -186,7 +188,8 @@ def main():
                             'neu': 0,
                             'pos': 0,
                             'message': "N/A",
-                            'detailed_feedback': "N/A"
+                            'short_message': "N/A",
+                            'learning_message': "N/A"
                         }
                 except Exception as e:
                     logger.error(f"Exception during query processing: {e}", exc_info=True)
@@ -202,7 +205,8 @@ def main():
                         'neu': 0,
                         'pos': 0,
                         'message': "N/A",
-                        'detailed_feedback': "N/A"
+                        'short_message': "N/A",
+                        'learning_message': "N/A"
                     }
                     # Clear the default error message
                     st.markdown("<p style='color: transparent;'>An error occurred: list index out of range</p>",
@@ -275,7 +279,9 @@ def main():
                         <p>Neutral: {sentiment.get('neu', 0):.2f}</p>
                         <p>Positive: {sentiment.get('pos', 0):.2f}</p>
                         <p><b>Sentiment Message: </b> {sentiment.get('message', '')}</p>
-                        <p><b>Detailed Feedback: </b> {sentiment.get('detailed_feedback', '')}</p>                    
+                        <p><b>Short Message: </b> {sentiment.get('short_message', '')}</p>
+                        <p><b>Learning Message: </b> {sentiment.get('learning_message', '')}</p>                    
+                 
                     </div>
                     """
                     st.markdown(sentiment_box, unsafe_allow_html=True)
