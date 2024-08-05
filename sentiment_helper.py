@@ -1,16 +1,67 @@
 import nltk
+import random
 from nltk.sentiment import SentimentIntensityAnalyzer
-from transformers import pipeline, T5Tokenizer, T5ForConditionalGeneration
 
 # Uncomment the line below if the VADER lexicon is not already downloaded
-# nltk.download('vader_lexicon')
+nltk.download('vader_lexicon')
 
-# Initialize T5 model and tokenizer
-tokenizer = T5Tokenizer.from_pretrained("t5-small")
-model = T5ForConditionalGeneration.from_pretrained("t5-small")
+# Predefined quotes for different sentiments
+positive_quotes = [
+    "Your positive energy is a beacon of light, inspiring those around you. Keep shining!",
+    "The only limit to our realization of tomorrow is our doubts of today.",
+    "Positive thinking will let you do everything better than negative thinking will.",
+    "Every day is a new beginning. Take a deep breath, smile, and start again.",
+    "Keep your face always toward the sunshine—and shadows will fall behind you.",
+    "The best way to predict the future is to create it.",
+    "Believe you can and you're halfway there.",
+    "You are never too old to set another goal or to dream a new dream.",
+    "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+    "The only way to achieve the impossible is to believe it is possible.",
+    "Happiness is not something ready-made. It comes from your own actions.",
+    "In the middle of every difficulty lies opportunity.",
+    "The future belongs to those who believe in the beauty of their dreams.",
+    "Act as if what you do makes a difference. It does.",
+    "With the new day comes new strength and new thoughts."
+]
+
+negative_quotes = [
+    "Even in challenging times, remember that every sunset brings the promise of a new dawn.",
+    "Tough times never last, but tough people do.",
+    "In the midst of winter, I found there was, within me, an invincible summer.",
+    "The greatest glory in living lies not in never falling, but in rising every time we fall.",
+    "When you reach the end of your rope, tie a knot in it and hang on.",
+    "Hardships often prepare ordinary people for an extraordinary destiny.",
+    "The darkest hour has only sixty minutes.",
+    "Stars can't shine without darkness.",
+    "Although the world is full of suffering, it is also full of the overcoming of it.",
+    "Turn your wounds into wisdom.",
+    "What lies behind us and what lies before us are tiny matters compared to what lies within us.",
+    "Our greatest glory is not in never falling, but in rising every time we fall.",
+    "Strength does not come from physical capacity. It comes from an indomitable will.",
+    "The struggle you're in today is developing the strength you need for tomorrow.",
+    "When everything seems to be going against you, remember that the airplane takes off against the wind, not with it."
+]
+
+neutral_quotes = [
+    "Embrace the calmness within you, for it is in stillness that we find clarity and strength.",
+    "Life is a balance of holding on and letting go.",
+    "Every day may not be good, but there is something good in every day.",
+    "Sometimes you will never know the value of a moment until it becomes a memory.",
+    "Keep your eyes on the stars and your feet on the ground.",
+    "The best way to find yourself is to lose yourself in the service of others.",
+    "Life is not measured by the number of breaths we take, but by the moments that take our breath away.",
+    "Life is 10% what happens to us and 90% how we react to it.",
+    "The only journey is the one within.",
+    "Do not dwell in the past, do not dream of the future, concentrate the mind on the present moment.",
+    "Life is what happens when you're busy making other plans.",
+    "It does not matter how slowly you go as long as you do not stop.",
+    "The purpose of our lives is to be happy.",
+    "You have within you right now, everything you need to deal with whatever the world can throw at you.",
+    "Life is really simple, but we insist on making it complicated."
+]
 
 def analyze_sentiment_vader(text):
-    """Analyze sentiment using VADER and generate short messages using T5 model."""
+    """Analyze sentiment using VADER and generate short messages based on predefined quotes."""
     analyzer = SentimentIntensityAnalyzer()
     sentiment_scores = analyzer.polarity_scores(text)
 
@@ -27,41 +78,59 @@ def analyze_sentiment_vader(text):
     else:
         sentiment_message = "Neutral"
 
-    short_message = generate_short_message(text, sentiment_message)
+    short_message = generate_short_message(sentiment_message)
 
     return sentiment_scores, compound, neg, neu, pos, sentiment_message, short_message
 
-def generate_short_message(user_query, sentiment_message):
-    """Generate a short message based on sentiment using T5 model."""
+def generate_short_message(sentiment_message):
+    """Generate a short, quotable message based on sentiment using predefined quotes."""
     if sentiment_message == 'Negative':
-        prompt = f"Generate a short and uplifting message to help someone who is feeling down. User query: {user_query}"
+        return random.choice(negative_quotes)
     elif sentiment_message == 'Positive':
-        prompt = f"Generate a short motivational message to reinforce someone's positive feelings. User query: {user_query}"
+        return random.choice(positive_quotes)
     else:  # Neutral sentiment
-        prompt = f"Generate a short, informative message for someone with a neutral sentiment. User query: {user_query}"
+        return random.choice(neutral_quotes)
 
-    # Prepare the input text
-    input_text = prompt
-    input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=512, truncation=True)
+def generate_learning_message(sentiment_message):
+    """Generate a learning message based on sentiment."""
+    if sentiment_message == 'Negative':
+        learning_message = "Reflect on challenges and remember that every setback is an opportunity to grow stronger. Embrace the lessons learned from difficult experiences."
+    elif sentiment_message == 'Positive':
+        learning_message = "Harness your positive energy to set new goals and inspire others. Your optimism can lead to remarkable achievements and influence those around you."
+    else:  # Neutral sentiment
+        learning_message = "Maintain your balance and stay grounded. Use this time to reflect on your progress and plan your next steps with clarity and purpose."
 
-    # Generate the message
-    output_ids = model.generate(input_ids, max_length=50, num_return_sequences=1, early_stopping=True, num_beams=5)
-    generated_text = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+    return learning_message
 
-    return generated_text
+def generate_all_messages():
+    """Generate sentiment analysis results and messages for a set of example texts."""
+    example_texts = [
+        "I am feeling enlightened after reading the Bhagavad Gita!",
+        "I am really frustrated with the way things are going.",
+        "It’s just another day, nothing special.",
+        "Today is a wonderful day full of opportunities!",
+        "I can't seem to get anything right today.",
+        "I have a lot on my mind but I'm staying calm.",
+        "Feeling great about the new project I'm working on!",
+        "Facing some challenges, but I believe things will get better.",
+        "I am indifferent to what’s happening around me."
+    ]
 
-def gita_bot_response(user_query):
-    """Generate a response based on sentiment analysis and provide a short message."""
-    sentiment_scores, compound, neg, neu, pos, sentiment_message, short_message = analyze_sentiment_vader(user_query)
+    for text in example_texts:
+        sentiment_scores, compound, neg, neu, pos, sentiment_message, short_message = analyze_sentiment_vader(text)
+        learning_message = generate_learning_message(sentiment_message)
 
-    # Generate a response based on sentiment
-    sentiment_feedback = f"Sentiment Feedback: {sentiment_message}\n\nShort Message: {short_message}"
-
-    return sentiment_feedback
+        print(f"Text: {text}")
+        print(f"Sentiment Scores: {sentiment_scores}")
+        print(f"Compound Score: {compound:.2f}")
+        print(f"Negative Score: {neg:.2f}")
+        print(f"Neutral Score: {neu:.2f}")
+        print(f"Positive Score: {pos:.2f}")
+        print(f"Sentiment Message: {sentiment_message}")
+        print(f"Short Message: {short_message}")
+        print(f"Learning Message: {learning_message}")
+        print("-" * 50)
 
 # Example usage
 if __name__ == "__main__":
-    user_query = "What is the significance of meditation in the Bhagavad Gita?"
-    user_query = "I am feeling enlightened after reading the Bhagavad Gita!"
-
-    print(gita_bot_response(user_query))
+    generate_all_messages()
