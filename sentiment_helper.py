@@ -60,6 +60,7 @@ neutral_quotes = [
     "Life is really simple, but we insist on making it complicated."
 ]
 
+
 def analyze_sentiment_vader(text):
     """Analyze sentiment using VADER and generate short messages based on predefined quotes."""
     analyzer = SentimentIntensityAnalyzer()
@@ -82,6 +83,7 @@ def analyze_sentiment_vader(text):
 
     return sentiment_scores, compound, neg, neu, pos, sentiment_message, short_message
 
+
 def generate_short_message(sentiment_message):
     """Generate a short, quotable message based on sentiment using predefined quotes."""
     if sentiment_message == 'Negative':
@@ -90,6 +92,7 @@ def generate_short_message(sentiment_message):
         return random.choice(positive_quotes)
     else:  # Neutral sentiment
         return random.choice(neutral_quotes)
+
 
 def generate_learning_message(sentiment_message):
     """Generate a learning message based on sentiment."""
@@ -101,6 +104,7 @@ def generate_learning_message(sentiment_message):
         learning_message = "Maintain your balance and stay grounded. Use this time to reflect on your progress and plan your next steps with clarity and purpose."
 
     return learning_message
+
 
 def generate_all_messages():
     """Generate sentiment analysis results and messages for a set of example texts."""
@@ -131,6 +135,6 @@ def generate_all_messages():
         print(f"Learning Message: {learning_message}")
         print("-" * 50)
 
-# Example usage
+
 if __name__ == "__main__":
     generate_all_messages()

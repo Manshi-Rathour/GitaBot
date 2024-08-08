@@ -5,15 +5,9 @@ from io import BytesIO
 from helper import generate_response
 from sentiment_helper import analyze_sentiment_vader, generate_learning_message
 import warnings
-import logging
 
 # Suppress deprecation warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
-
-# Set up logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 
 def get_base64(file_path):
@@ -175,7 +169,6 @@ def main():
                             'learning_message': learning_message
                         }
                     else:
-                        logger.warning("Empty response received from generate_response")
                         st.session_state['general_response'] = "Sorry, I can't answer this query."
                         st.session_state['dataset_response'] = ""
                         st.session_state['shloka_id'] = ""
@@ -192,7 +185,6 @@ def main():
                             'learning_message': "N/A"
                         }
                 except Exception as e:
-                    logger.error(f"Exception during query processing: {e}", exc_info=True)
                     st.session_state['general_response'] = "Sorry, I can't answer this query."
                     st.session_state['dataset_response'] = ""
                     st.session_state['shloka_id'] = ""
