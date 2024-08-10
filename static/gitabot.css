@@ -1,8 +1,9 @@
 body {
     font-family: 'Arial', sans-serif;
     background-image: url('img/bg.png');
+    /* background-color: #212529; */
     background-size: cover; 
-    background-repeat: no-repeat; 
+    /* background-repeat: no-repeat;  */
     background-position: center; 
 }
 
@@ -20,7 +21,7 @@ body .chatbot-section #searches {
     border-radius: 5px;
     margin-bottom: 15px;
     padding: 10px;
-    border: 1px solid rgb(183, 183, 183);
+    border: 1px solid gold;
     cursor: pointer;
     transition: background-color 0.3s;
 }
@@ -34,7 +35,9 @@ body .chatbot-section #result {
     background-color: #101010;
     color: white;
     overflow-y: auto;
-    height: 70vh;
+    height: 75vh;
+    border: 1px solid gold;
+    border-radius: 10px;
 }
 
 /* Scrollbar styles */
@@ -68,7 +71,8 @@ body .chatbot-section #result {
 }
 
 #queryInput {
-    border-color: rgb(183, 183, 183);
+    /* border-color: rgb(183, 183, 183); */
+    border: 1px solid gold;
     color: white;
     background-color: #101010;
     flex: 1;
@@ -97,3 +101,12 @@ body .chatbot-section #result {
     height: 20px;
 }
 
+#submitButton {
+    background-color: gold;
+    color: black; 
+    cursor: pointer; 
+}
+
+#submitButton:hover {
+    background-color: rgb(254, 181, 46);
+}

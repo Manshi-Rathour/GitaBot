@@ -1,5 +1,5 @@
 function openNewChat() {
-    location.reload(); 
+    location.reload();
 }
 
 console.log("Chatbot script loaded");
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleKeyDown(event) {
         if (event.key === 'Enter') {
-            event.preventDefault(); 
+            event.preventDefault();
             handleEnterKey();
         }
     }
@@ -87,8 +87,25 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         }
 
+        // Sentiment analysis response
+        if (response.sentiment) {
+            formattedResponse += `
+            <div class="formated-response-container">
+                <p><strong>Sentiment Analysis:</strong></p>
+                <p>Compound Score: ${response.sentiment.compound}</p>
+                <p>Negative: ${response.sentiment.neg}</p>
+                <p>Neutral: ${response.sentiment.neu}</p>
+                <p>Positive: ${response.sentiment.pos}</p>
+                <p>${response.sentiment.message}</p>
+                <p><em>${response.sentiment.short_message}</em></p>
+                <p><strong>Learning Message:</strong> ${response.sentiment.learning_message}</p>
+            </div>
+            `;
+        }
+
         return formattedResponse.trim();
     }
+
 
     function appendMessage(role, text) {
         const messageElement = document.createElement('div');
@@ -105,13 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const icon = document.createElement('img');
             icon.src = 'static/img/feather.png';
             icon.alt = 'Feather Icon';
-            icon.style.width = '20px'; 
+            icon.style.width = '20px';
             icon.style.height = '20px';
             icon.style.verticalAlign = 'middle';
 
             // Add the icon and text to the messageElement
             messageElement.appendChild(icon);
-            messageElement.innerHTML += ` : ${text}`; 
+            messageElement.innerHTML += ` : ${text}`;
             messageElement.classList.add('bg-dark');
         }
 
@@ -123,9 +140,9 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             console.log('Sending message to chatbot:', message);
 
-            const response = await fetch('/gitabot', {
+            const response = await fetch('/get_response', { // Updated endpoint
                 method: 'POST',
-                body: JSON.stringify({ message }),
+                body: JSON.stringify({ query: message }),
                 headers: {
                     'Content-Type': 'application/json',
                 },
