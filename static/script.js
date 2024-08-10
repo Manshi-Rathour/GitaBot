@@ -31,10 +31,10 @@ document.getElementById('query-form').addEventListener('submit', function (event
     .then(data => {
         let responseContainer = document.getElementById('response-container');
         responseContainer.innerHTML = '';
-        
+
         if (data.status === 'success') {
             responseContainer.style.display = 'block';
-            
+
             responseContainer.innerHTML += `
                 <div class="response-wrapper">
                     <div class="guidance-column">
@@ -67,12 +67,13 @@ document.getElementById('query-form').addEventListener('submit', function (event
     .catch(error => console.error('Error:', error));
 });
 
+// Sidebar section toggle
 document.querySelectorAll('.sidebar ul li').forEach(item => {
     item.addEventListener('click', function () {
         const section = this.getAttribute('data-section');
         document.querySelectorAll('.sidebar ul li').forEach(li => li.classList.remove('active'));
         this.classList.add('active');
-        
+
         document.querySelectorAll('.content-section').forEach(sec => {
             sec.classList.remove('active');
             sec.style.display = 'none';
@@ -83,4 +84,7 @@ document.querySelectorAll('.sidebar ul li').forEach(item => {
 });
 
 // Open the first sidebar item by default
-document.querySelector('.sidebar ul li.active').click();
+const firstSidebarItem = document.querySelector('.sidebar ul li');
+if (firstSidebarItem) {
+    firstSidebarItem.click();
+}

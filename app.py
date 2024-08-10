@@ -29,15 +29,15 @@ def get_response():
             # Generate chatbot response
             response_data = generate_response(query)
 
-            if response_data:
+            if response_data["general_response"] and response_data["dataset_response"]:
                 response = {
                     "status": "success",
-                    "general_response": response_data.get("general_response", "Sorry, I can't answer this query."),
-                    "dataset_response": response_data.get("dataset_response", ""),
-                    "id": response_data.get("id", ""),
-                    "shloka": response_data.get("shloka", ""),
-                    "hin_meaning": response_data.get("hin_meaning", ""),
-                    "eng_meaning": response_data.get("eng_meaning", ""),
+                    "general_response": response_data["general_response"],
+                    "dataset_response": response_data["dataset_response"],
+                    "shloka_id": response_data["id"],
+                    "shloka": response_data["shloka"],
+                    "hin_meaning": response_data["hin_meaning"],
+                    "eng_meaning": response_data["eng_meaning"],
                     "sentiment": {
                         'compound': compound,
                         'neg': neg,
@@ -56,7 +56,7 @@ def get_response():
         except Exception as e:
             response = {
                 "status": "error",
-                "message": "An error occurred while processing your request."
+                "message": "An error occurred while processing the request."
             }
     else:
         response = {
