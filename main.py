@@ -12,13 +12,13 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 
 def get_base64(file_path):
-    """Encode image to Base64."""
+    # Encode image to Base64
     with open(file_path, "rb") as img_file:
         return base64.b64encode(img_file.read()).decode()
 
 
 def set_background(png_file):
-    """Set background image using Base64 encoding."""
+    # Set background image using Base64 encoding
     bin_str = get_base64(png_file)
     page_bg_img = '''
     <style>
@@ -48,9 +48,7 @@ def main():
     # Open the images
     feather_icon = Image.open(feather_icon_path)
     bot_image = Image.open(bot_image_path)
-    # Load the custom icon and image
-    # feather_icon = Image.open("static/img/feather.png")
-    # bot_image = Image.open("static/img/bot_image.jpeg")
+
     bot_image = bot_image.resize((300, 300))
     bot_image_base64 = image_to_base64(bot_image)
 
@@ -63,7 +61,7 @@ def main():
     )
 
     # Set background image
-    set_background('static/img/bg.png')  # Path to your background image
+    set_background('static/img/bg.png')
 
     # Adding other CSS styling for elements
     page_styles = '''
@@ -241,7 +239,7 @@ def main():
                     </div>
                     """
 
-                    print("Response Container HTML:", response_container)
+                    # print("Response Container HTML:", response_container)
                     st.markdown(response_container, unsafe_allow_html=True)
 
                     # Display the response from bhagwad gita
@@ -267,7 +265,7 @@ def main():
                         </div>
                         """
 
-                        print("Detailed Response HTML:", detailed_response)
+                        # print("Detailed Response HTML:", detailed_response)
                         st.markdown(detailed_response, unsafe_allow_html=True)
                     else:
                         st.markdown("<p class='formated-response-container'>Sorry, I can't answer this query.</p>",
