@@ -223,6 +223,7 @@ def main():
                     st.markdown(f"<p class='formated-response-container'>{general_response}</p>",
                                 unsafe_allow_html=True)
                 else:
+                    # print("General Response:", general_response)
                     # Display the response
                     st.markdown("<p class='subtitle'>Guidance Based on Your Query</p>", unsafe_allow_html=True)
                     response_container = f"""
@@ -230,6 +231,8 @@ def main():
                         <p>{general_response}</p>
                     </div>
                     """
+
+                    print("Response Container HTML:", response_container)
                     st.markdown(response_container, unsafe_allow_html=True)
 
                     # Display the response from bhagwad gita
@@ -254,6 +257,8 @@ def main():
                             <p>English Meaning: {eng_meaning}</p>
                         </div>
                         """
+
+                        print("Detailed Response HTML:", detailed_response)
                         st.markdown(detailed_response, unsafe_allow_html=True)
                     else:
                         st.markdown("<p class='formated-response-container'>Sorry, I can't answer this query.</p>",
@@ -276,6 +281,8 @@ def main():
                  
                     </div>
                     """
+
+                    # print("Sentiment Box HTML:", sentiment_box)
                     st.markdown(sentiment_box, unsafe_allow_html=True)
                 else:
                     # Clear the default error message

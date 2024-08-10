@@ -1,0 +1,99 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image: url('img/bg.png');
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center; 
+}
+
+/* Gitabot */
+
+body .chatbot-section {
+    margin-top: 70px; 
+}
+
+body .chatbot-section #searches {
+    color: white;
+}
+
+#new-chat {
+    border-radius: 5px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid rgb(183, 183, 183);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#new-chat:hover {
+    background-color: #101010;
+}
+
+body .chatbot-section #result {
+    padding: 15px;
+    background-color: #101010;
+    color: white;
+    overflow-y: auto;
+    height: 70vh;
+}
+
+/* Scrollbar styles */
+.result-scroll::-webkit-scrollbar {
+    width: 5px;
+}
+
+.result-scroll::-webkit-scrollbar-thumb {
+    background-color: #888;
+}
+
+.formated-response-container {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+    /* background-color: #101010; */
+    color: white;
+}
+
+.formated-response-container p {
+    margin: 0 0 10px;
+    line-height: 1.5;
+}
+
+#user-query {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+#queryInput {
+    border-color: rgb(183, 183, 183);
+    color: white;
+    background-color: #101010;
+    flex: 1;
+}
+
+#queryInput::placeholder {
+    color: rgb(183, 183, 183);
+}
+
+#user_area {
+    border-radius: 5px;
+    padding: 10px;
+    color: white;
+}
+
+#chatbot_area {
+    background-color: #333;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.spinner-border {
+    width: 20px;
+    height: 20px;
+}
+
