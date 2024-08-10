@@ -5,6 +5,7 @@ from io import BytesIO
 from helper import generate_response
 from sentiment_helper import analyze_sentiment_vader, generate_learning_message
 import warnings
+import os
 
 # Suppress deprecation warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
@@ -39,9 +40,17 @@ def image_to_base64(image):
 
 
 def main():
+    # Get the directory where main.py is located
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    # Construct the full path to the images
+    feather_icon_path = os.path.join(script_dir, 'static', 'img', 'feather.png')
+    bot_image_path = os.path.join(script_dir, 'static', 'img', 'bot_image.jpeg')
+    # Open the images
+    feather_icon = Image.open(feather_icon_path)
+    bot_image = Image.open(bot_image_path)
     # Load the custom icon and image
-    feather_icon = Image.open("static/img/feather.png")
-    bot_image = Image.open("static/img/bot_image.jpeg")
+    # feather_icon = Image.open("static/img/feather.png")
+    # bot_image = Image.open("static/img/bot_image.jpeg")
     bot_image = bot_image.resize((300, 300))
     bot_image_base64 = image_to_base64(bot_image)
 
