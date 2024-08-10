@@ -40,8 +40,8 @@ def image_to_base64(image):
 
 def main():
     # Load the custom icon and image
-    feather_icon = Image.open("img/feather.png")
-    bot_image = Image.open("img/bot_image.jpeg")
+    feather_icon = Image.open("static/img/feather.png")
+    bot_image = Image.open("static/img/bot_image.jpeg")
     bot_image = bot_image.resize((300, 300))
     bot_image_base64 = image_to_base64(bot_image)
 
@@ -54,7 +54,7 @@ def main():
     )
 
     # Set background image
-    set_background('img/bg.png')  # Path to your background image
+    set_background('static/img/bg.png')  # Path to your background image
 
     # Adding other CSS styling for elements
     page_styles = '''
