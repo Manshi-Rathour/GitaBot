@@ -74,85 +74,70 @@ body {
     margin: auto;
     padding: 20px;
     position: relative;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    color: white;
 }
 
 h1 {
     color: gold;
     font-weight: bold;
     font-size: 35px;
-    margin-top: 60px; 
+    margin-top: 80px;
 }
 
-h3 {
+h2 {
     color: gold;
     font-size: 28px;
-    margin-bottom: 0;
+    margin-bottom: 20px;
+    border-bottom: 2px solid gold;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+p, ul {
+    color: #ccc;
+    line-height: 1.6;
+    text-align: left;
+    margin: 10px 0;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+ul li {
+    margin-bottom: 8px;
 }
 
 .big-container {
     display: flex;
-    justify-content: space-between;
-    margin-top: 20px; 
+    flex-direction: column;
     gap: 20px;
-    padding: 10px;  
+    padding: 20px;
     background-color: rgba(0, 0, 0, 0.7);
     border-radius: 15px;
     border: 2px solid gold;
-    /* max-height: 450px;  */
-    overflow: auto; 
-}
-
-.left-container, .right-container {
-    width: 48%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    text-align: left;
-}
-
-.left-container .bot-image {
-    width: 100%;
-    max-width: 330px;  
-    border-radius: 10px;
-    margin: 10px 0;
-}
-
-.right-container p {
-    font-size: 15px;  
-    line-height: 1.5;
-    margin-right: 20px;
-}
-
-button {
-    background-color: gold;
-    color: black;
-    padding: 8px 16px;  
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     margin-top: 20px;
-    font-size: 16px;
+    overflow: auto;
 }
 
-button:hover {
-    background-color: rgb(254, 181, 46);
+.contributor {
+    margin: 5px 0;
 }
 
-@media (max-width: 840px) {
-    .big-container {
-        flex-direction: column;
-        align-items: center; 
-    }
+.contributor a {
+    color: gold;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-    .left-container, .right-container {
-        width: 100%; 
-        text-align: center; 
-    }
+.contributor a:hover {
+    text-decoration: underline;
+}
 
-    .right-container p {
-        margin: 20px 0 0 0; 
-    }
+h2, h3 {
+    text-align: center;
 }
 
 

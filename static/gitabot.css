@@ -7,10 +7,63 @@ body {
     background-position: center; 
 }
 
+#icon img {
+    width: 50px;
+    height: 50px;
+}
+
+.custom-navbar {
+    background-color: black;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    top: 0; 
+    transition: background-color 0.5s ease;
+}
+
+.custom-navbar.navbar-scroll {
+    background-color: black;
+}
+
+#login {
+    margin-right: 2vh;
+}
+
+.navbar-toggler-icon {
+    background-color: rgb(183, 183, 183);
+}
+
+.white-text {
+    color: white !important;
+}
+
+.white-text:hover {
+    text-decoration: underline;
+}
+
+.nav-item{
+    margin-top: 10px;
+}
+
+@media (min-width: 420px) and (max-width: 599px) {
+    .custom-offcanvas {
+        width: 60% !important; 
+    }
+}
+
+@media (max-width: 419px) {
+    .custom-offcanvas {
+        width: 75% !important; 
+    }
+}
+
+
+
+
 /* Gitabot */
 
 body .chatbot-section {
-    margin-top: 70px; 
+    margin-top: 90px; 
 }
 
 body .chatbot-section #searches {

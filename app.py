@@ -15,6 +15,16 @@ def gitabot():
     return render_template('gitabot.html')
 
 
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
+
+@app.route('/documentation')
+def documentation():
+    return render_template('documentation.html')
+
+
 @app.route('/get_response', methods=['POST'])
 def get_response():
     data = request.json
@@ -29,15 +39,15 @@ def get_response():
             # Generate chatbot response
             response_data = generate_response(query)
 
-            if response_data["general_response"] and response_data["dataset_response"]:
+            if response_data:
                 response = {
                     "status": "success",
-                    "general_response": response_data["general_response"],
-                    "dataset_response": response_data["dataset_response"],
-                    "shloka_id": response_data["id"],
-                    "shloka": response_data["shloka"],
-                    "hin_meaning": response_data["hin_meaning"],
-                    "eng_meaning": response_data["eng_meaning"],
+                    "general_response": response_data.get("general_response", "Sorry, I can't answer this query."),
+                    "dataset_response": response_data.get("dataset_response", ""),
+                    "id": response_data.get("id", ""),
+                    "shloka": response_data.get("shloka", ""),
+                    "hin_meaning": response_data.get("hin_meaning", ""),
+                    "eng_meaning": response_data.get("eng_meaning", ""),
                     "sentiment": {
                         'compound': compound,
                         'neg': neg,
@@ -56,7 +66,7 @@ def get_response():
         except Exception as e:
             response = {
                 "status": "error",
-                "message": "An error occurred while processing the request."
+                "message": "An error occurred while processing your request."
             }
     else:
         response = {
