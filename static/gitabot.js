@@ -142,18 +142,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add the icon and text to the messageElement
             messageElement.appendChild(icon);
             messageElement.innerHTML += ` : ${text}`;
-            messageElement.classList.add('bg-dark');
+            // messageElement.classList.add('bg-dark');
         }
 
         result.appendChild(messageElement);
-        result.scrollTop = result.scrollHeight; // Auto-scroll to the bottom
+        result.scrollTop = result.scrollHeight; 
     }
 
     async function sendMessageToChatbot(message) {
         try {
             console.log('Sending message to chatbot:', message);
 
-            const response = await fetch('/get_response', { // Updated endpoint
+            const response = await fetch('/get_response', { 
                 method: 'POST',
                 body: JSON.stringify({ query: message }),
                 headers: {
