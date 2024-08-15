@@ -47,15 +47,20 @@ To utilize GitaBot locally, follow these steps:
    ```
 
 6. **Run the Application**:
-   Launch the application using Streamlit:
-   ```bash
-   streamlit run main.py
-   ```
+   1. **Launch the Streamlit Version**
+      
+      To run the Streamlit app, use the following command:
+      ```bash
+      streamlit run main.py
+      ```
+   
+   3. **Launch the Flask Version**
+      
+      To run the Flask app, use the following command:
+      ```bash
+      python app.py
+      ```
 
-## Usage
-Interact with GitaBot:
-- Open your browser and go to `http://localhost:8501`
-- Enter your query and receive guidance based on the Bhagavad Gita.
 
 ## Prompt Examples
 
