@@ -72,17 +72,41 @@ body .chatbot-section #result {
     align-items: center;
 }
 
-#queryInput {
-    /* border-color: rgb(183, 183, 183); */
+.input-group-prepend {
+    display: flex;
+    align-items: center;
+    padding-right: 10px; 
+}
+
+.input-group-prepend .input-group-text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background-color: #101010;
+    color: white;
     border: 1px solid gold;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.input-group-prepend .input-group-text i {
+    font-size: 16px;
+}
+
+#queryInput {
+    border: 1px solid gold; 
     color: white;
     background-color: #101010;
     flex: 1;
+    padding-left: 10px;
 }
 
 #queryInput::placeholder {
     color: rgb(183, 183, 183);
 }
+
 
 #user_area {
     border-radius: 5px;
@@ -111,4 +135,44 @@ body .chatbot-section #result {
 
 #submitButton:hover {
     background-color: rgb(254, 181, 46);
+}
+
+
+/* Container for Language Selection Dropdown */
+.language-selection-container {
+    margin-top: 20px; 
+    padding: 10px;   
+    border: 1px solid gold; 
+    border-radius: 5px; 
+    background-color: #101010;
+}
+
+/* Label for the Dropdown */
+.language-selection-container label {
+    font-size: 16px; 
+    font-weight: bold; 
+    color: white; 
+    margin-bottom: 5px; 
+    display: block; 
+}
+
+/* Dropdown Styling */
+.language-selection-container select {
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid gold;
+    border-radius: 5px; 
+    background-color: #101010; 
+    font-size: 16px;
+    color: white;
+}
+
+.language-selection-container select option {
+    padding: 10px;
+    background-color: #101010;
+    color: white;
+}
+
+#inputLanguageDropdown{
+    cursor: pointer;
 }

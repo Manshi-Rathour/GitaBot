@@ -6,7 +6,8 @@
         <title>GitaBot</title>
 
         <!-- Favicon -->
-        <link rel="icon" href="../static/img/feather.png" sizes="32x32" type="image/png">
+        <link rel="icon" href="../static/img/feather.png" sizes="32x32"
+            type="image/png">
 
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -30,7 +31,7 @@
     <body>
 
         <!-- Navbar -->
-        {% include 'navbar.html' %} 
+        {% include 'navbar.html' %}
 
         <!-- Chatbot section -->
         <div class="container chatbot-section">
@@ -40,16 +41,27 @@
                         onclick="openNewChat()">
                         New Chat
                     </div>
+                    <!-- Language Selection Dropdown -->
+                    <div class="col-md-12 mt-3 language-selection-container">
+                        <label for="inputLanguageDropdown">Select
+                            Language:</label>
+                        <select class="form-control" id="inputLanguageDropdown">
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                    </div>
                 </div>
 
                 <div class="col-md-10">
                     <div id="result" class="result-scroll"></div>
                     <div id="user-query" class="input-group mt-2">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="microphoneIcon">
+                                <i class="fas fa-microphone"></i>
+                            </span>
+                        </div>
                         <input type="text" class="form-control" id="queryInput"
                             placeholder="Type your query here...">
-                        <button class="btn"
-                            id="submitButton">Submit</button>
-
+                        <button class="btn" id="submitButton">Submit</button>
                     </div>
                 </div>
             </div>
