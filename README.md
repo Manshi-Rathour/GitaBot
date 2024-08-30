@@ -9,6 +9,12 @@ Welcome to **GitaBot**, an advanced interactive chatbot designed to impart wisdo
 - **Sentiment-Based Guidance**: Experience tailored responses that adapt to the sentiment of your queries.
 - **Visually Appealing Interface**: Enjoy a user-friendly and visually captivating interface designed with Streamlit.
 
+## Upcoming Features
+*The following features are currently in development and will be available in future updates:*
+
+- **Multilingual Interaction**: Interact with GitaBot in multiple languages, making the teachings accessible to a broader audience.
+- **Voice Input Support**: Speak your queries and receive voice-based responses, offering a hands-free and immersive experience.
+
 ## Installation
 To utilize GitaBot locally, follow these steps:
 
@@ -61,7 +67,6 @@ To utilize GitaBot locally, follow these steps:
       python app.py
       ```
 
-
 ## Prompt Examples
 
 ### Personal Guidance and Inner Peace
@@ -85,8 +90,6 @@ To utilize GitaBot locally, follow these steps:
 - "Can you explain the role of a teacher in the Bhagavad Gita?"
 - "How does the Bhagavad Gita address the concept of attachment?"
 
-
-
 ## Contributors
 - **Manshi Rathour** - <a href="https://github.com/Manshi-Rathour" target="_blank">GitHub Profile</a>
 - **Sumankumari** - <a href="https://github.com/sSumankumari" target="_blank">GitHub Profile</a>
@@ -98,4 +101,3 @@ Thank you for choosing GitaBot! We hope you find clarity and wisdom through our 
 - <a href="https://bit.ly/gita-bot" target="_blank">GitaBot</a>
 
 - <a href="https://gita-bot.streamlit.app/" target="_blank">GitaBot on Streamlit</a>
-
