@@ -1,7 +1,8 @@
 import os
 import json
 from flask import Flask, render_template, request, jsonify
-from helper import generate_response
+# from helper import generate_response
+from test import generate_response
 from sentiment_helper import analyze_sentiment_vader, generate_learning_message
 from google.cloud import translate_v2 as translate
 
