@@ -35,12 +35,13 @@ May you find clarity and peace as you reflect on these teachings and navigate yo
 
 def generate_openai_response(prompt):
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # or "gpt-4" if you have access
+        model="gpt-3.5-turbo",  # or "gpt-4"
         messages=[
             {"role": "user", "content": prompt}
         ]
     )
     return response['choices'][0]['message']['content']
+
 
 def generate_response(query, use_dataset=True):
     # Generate general response
@@ -102,6 +103,7 @@ def generate_response(query, use_dataset=True):
             "hin_meaning": "",
             "eng_meaning": ""
         }
+
 
 if __name__ == "__main__":
     query = "How can I find inner peace?"
