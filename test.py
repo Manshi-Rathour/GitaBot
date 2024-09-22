@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import openai
 import re
 
-# Load environment variables
 load_dotenv()
 
 # Load dataset
