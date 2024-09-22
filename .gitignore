@@ -1,6 +1,7 @@
 # Ignore environment files
 .env
 venv/
+myvenv/
 # speech to text
 advance-stratum-409704-50ff1f2aa864.json
 # text to speech
