@@ -7,10 +7,17 @@ import re
 load_dotenv()
 
 # Load dataset
-data = pd.read_csv('Bhagwad_Gita.csv')
+try:
+    data = pd.read_csv('Bhagwad_Gita.csv')
+except FileNotFoundError:
+    raise Exception("Dataset 'Bhagwad_Gita.csv' not found. Ensure the file is in the correct directory.")
 
 # Initialize OpenAI API key
-openai.api_key = os.getenv('OPENAI_API_KEY')
+api_key = os.getenv('OPENAI_API_KEY')
+if api_key is None:
+    raise Exception("OpenAI API key not found. Ensure the API key is set in your environment variables.")
+
+openai.api_key = api_key
 
 # Define prompt templates
 prompt_template_with_id = """
@@ -33,14 +40,14 @@ May you find clarity and peace as you reflect on these teachings and navigate yo
 """
 
 def generate_openai_response(prompt):
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",  # or "gpt-4"
-        messages=[
-            {"role": "user", "content": prompt}
-        ]
-    )
-    return response['choices'][0]['message']['content']
-
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",  # or "gpt-4"
+            messages=[{"role": "user", "content": prompt}]
+        )
+        return response['choices'][0]['message']['content']
+    except Exception as e:
+        raise Exception(f"Error communicating with OpenAI API: {e}")
 
 def generate_response(query, use_dataset=True):
     # Generate general response
@@ -66,7 +73,7 @@ def generate_response(query, use_dataset=True):
                 verse = id_mentioned.split('.')[1]  # Extract verse
 
                 result = {
-                    "general_response": general_response.replace("**", ""),  # Remove stars
+                    "general_response": general_response,
                     "dataset_response": f"Chapter: {chapter} and Shloka: {verse}",
                     "id": id_mentioned,
                     "shloka": shloka,
@@ -77,7 +84,7 @@ def generate_response(query, use_dataset=True):
                 return result
             else:
                 return {
-                    "general_response": general_response.replace("**", ""),
+                    "general_response": general_response,
                     "dataset_response": "",
                     "id": "",
                     "shloka": "",
@@ -86,7 +93,7 @@ def generate_response(query, use_dataset=True):
                 }
         else:
             return {
-                "general_response": general_response.replace("**", ""),
+                "general_response": general_response,
                 "dataset_response": "",
                 "id": "",
                 "shloka": "",
@@ -95,7 +102,7 @@ def generate_response(query, use_dataset=True):
             }
     else:
         return {
-            "general_response": general_response.replace("**", ""),
+            "general_response": general_response,
             "dataset_response": "",
             "id": "",
             "shloka": "",
