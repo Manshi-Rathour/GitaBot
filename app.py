@@ -9,7 +9,12 @@ from google.cloud import translate_v2 as translate
 app = Flask(__name__)
 
 # Path to Google Cloud credentials
-credentials_path = os.path.join(os.path.dirname(__file__), 'advance-stratum-409704-8f6e8f9201b9.json')
+# Uncomment one of the lines below to select the desired credential file
+# credentials_file = 'advance-stratum-409704-8f6e8f9201b9.json'  # For contributor 1
+credentials_file = 'gitabot-434209-8f7a7daa37c1.json'  # For contributor 2
+
+
+credentials_path = os.path.join(os.path.dirname(__file__), credentials_file)
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credentials_path
 
 # Initialize Google Cloud Translation client
