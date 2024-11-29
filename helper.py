@@ -50,14 +50,12 @@ chain_general = LLMChain(llm=llm, prompt=prompt_general)
 
 
 def generate_response(query, use_dataset=True):
-    # Always generate general response
     general_response = chain_general.run(query)
-
     if use_dataset:
-        # Generate response with Shloka ID
+        # Generating response with Shloka ID
         dataset_response = chain_with_id.run(query)
 
-        # Extract the first valid ID from response using regular expression
+        # Extracting the first valid ID from response using regular expression
         id_pattern = r'BG\d+\.\d+'
         matches = re.findall(id_pattern, dataset_response)
         if matches:
@@ -73,7 +71,7 @@ def generate_response(query, use_dataset=True):
                 verse = id_mentioned.split('.')[1]  # Extract verse
 
                 result = {
-                    "general_response": general_response.replace("**", ""),  # Remove stars
+                    "general_response": general_response.replace("**", ""),
                     "dataset_response": f"Chapter: {chapter} and Shloka: {verse}",
                     "id": id_mentioned,
                     "shloka": shloka,
