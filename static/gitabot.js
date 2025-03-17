@@ -1,12 +1,9 @@
 console.log("Chatbot script loaded");
 
-// Function to reload the page
 function openNewChat() {
-    location.reload(); 
+    location.reload();
 }
 
-
-// Initialize Google API for Speech Recognition
 let recognition;
 let isRecording = false;
 let accumulatedText = '';
@@ -30,22 +27,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function populateLanguageDropdown() {
         try {
-            const response = await fetch('/get_languages'); // Fetch supported languages from the backend
+            const response = await fetch('/get_languages');
             const languages = await response.json();
             if (Array.isArray(languages)) {
-                const populateDropdown = (dropdown) => {
-                    dropdown.innerHTML = '<option value="en">English</option>'; // Default option
-                    languages.forEach(language => {
-                        if (language.code !== 'en') { // Add other languages
-                            const option = document.createElement('option');
-                            option.value = language.code;
-                            option.textContent = language.name;
-                            dropdown.appendChild(option);
-                        }
-                    });
-                };
-                populateDropdown(inputLanguageDropdown);
-                inputLanguageDropdown.value = 'en'; // Set default selected option
+                inputLanguageDropdown.innerHTML = '<option value="en">English</option>';
+                languages.forEach(language => {
+                    if (language.code !== 'en') {
+                        const option = document.createElement('option');
+                        option.value = language.code;
+                        option.textContent = language.name;
+                        inputLanguageDropdown.appendChild(option);
+                    }
+                });
+                inputLanguageDropdown.value = 'en';
             }
         } catch (error) {
             console.error('Error fetching languages:', error);
@@ -55,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleKeyDown(event) {
         if (event.key === 'Enter') {
             event.preventDefault();
-            handleSubmitButton(); // Handle Enter key event
+            handleSubmitButton();
         }
     }
 
@@ -70,9 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
     async function sendMessage() {
         console.log("sendMessage function called");
         const userText = queryInput.value.trim();
-        const inputLanguage = inputLanguageDropdown.value; // Get selected input language
+        const inputLanguage = inputLanguageDropdown.value;
 
-        if (!userText && !accumulatedText) return; // Do nothing if the input is empty
+        if (!userText && !accumulatedText) return;
 
         const messageText = userText || accumulatedText;
         appendMessage('User', messageText);
@@ -86,8 +80,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error in sendMessageToChatbot:', error);
             appendMessage('Error', `Error: ${error.message}`);
         } finally {
-            queryInput.value = ''; // Clear input field after sending
-            accumulatedText = ''; // Clear the accumulated text
+            queryInput.value = '';
+            accumulatedText = '';
             hideLoadingSpinner();
         }
     }
@@ -98,24 +92,66 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('/get_response', {
                 method: 'POST',
                 body: JSON.stringify({ query: message, input_language: inputLanguage }),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
             });
 
             if (!response.ok) {
                 throw new Error(`Request failed with status ${response.status}`);
             }
 
-            const data = await response.json();
-            console.log('Chatbot data:', data);
-            return data;
+            return await response.json();
         } catch (error) {
             console.error('Error in sendMessageToChatbot:', error);
             return { general_response: `Error: ${error.message}` };
         }
     }
 
+    // text to speak -> response (only valid for english)
+    function speakText(element) {
+        const synth = window.speechSynthesis;
+
+        if (synth.speaking || synth.pending) {
+            synth.cancel();
+            resetSpeakerIcons();
+            return;
+        }
+
+        const container = element.closest('.formated-response-container');
+        if (!container) return;
+
+        const textToSpeak = Array.from(container.querySelectorAll('p'))
+            .map(p => p.innerText.trim())
+            .filter(text => text.length > 0)
+            .join(" ");
+
+        if (!textToSpeak) return;
+
+        const utterance = new SpeechSynthesisUtterance(textToSpeak);
+        utterance.lang = document.documentElement.lang || navigator.language || 'en-US';
+
+        resetSpeakerIcons();
+        element.style.color = 'red';
+
+        utterance.onend = () => {
+            element.style.color = 'gold';
+        };
+
+        synth.cancel();
+        setTimeout(() => synth.speak(utterance), 100);
+    }
+
+    function resetSpeakerIcons() {
+        document.querySelectorAll('.speaker-icon').forEach(icon => {
+            icon.style.color = 'gold';
+        });
+    }
+
+    function addSpeakerIcon() {
+        const inputLanguage = inputLanguageDropdown.value; // Get selected language
+        return inputLanguage === 'en' ? `<i class="fas fa-volume-up speaker-icon" style="color: gold; cursor: pointer; margin-left: 10px;"></i>` : '';
+    }
+
+    
     function formatChatbotResponse(response) {
         let formattedResponse = "";
 
@@ -123,12 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
             formattedResponse += `
                 <div class="formated-response-container">
                     <p>${response.general_response.replace(/\n/g, '<br>')}</p>
+                    ${addSpeakerIcon()}
                 </div>
             `;
         } else {
             formattedResponse += `
                 <div class="formated-response-container">
-                    <p>Sorry, I can't answer this query :( </p>
+                    <p>Sorry, I can't answer this query :(</p>
+                    ${addSpeakerIcon()}
                 </div>
             `;
         }
@@ -144,23 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <p>Shloka: ${response.shloka}</p>
                 <p>Hindi Meaning: ${response.hin_meaning || 'N/A'}</p>
                 <p>English Meaning: ${response.eng_meaning || 'N/A'}</p>
+                ${addSpeakerIcon()}
             </div>
         `;
-        }
-
-        if (response.sentiment) {
-            formattedResponse += `
-            <div class="formated-response-container">
-                <p><strong>Sentiment Analysis:</strong></p>
-                <p>Compound Score: ${response.sentiment.compound}</p>
-                <p>Negative: ${response.sentiment.neg}</p>
-                <p>Neutral: ${response.sentiment.neu}</p>
-                <p>Positive: ${response.sentiment.pos}</p>
-                <p>${response.sentiment.message}</p>
-                <p><em>${response.sentiment.short_message}</em></p>
-                <p><strong>Learning Message:</strong> ${response.sentiment.learning_message}</p>
-            </div>
-            `;
         }
 
         return formattedResponse.trim();
@@ -172,24 +196,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (role === "User") {
             messageElement.id = 'user_area';
-            const icon = '<i class="fas fa-user"></i>';
-            messageElement.innerHTML = `${icon} : ${text}`;
+            messageElement.innerHTML = `<i class="fas fa-user"></i> : ${text}`;
         } else {
             messageElement.id = 'chatbot_area';
-
-            const icon = document.createElement('img');
-            icon.src = 'static/img/feather.png';
-            icon.alt = 'Feather Icon';
-            icon.style.width = '20px';
-            icon.style.height = '20px';
-            icon.style.verticalAlign = 'middle';
-
-            messageElement.appendChild(icon);
-            messageElement.innerHTML += ` : ${text}`;
+            messageElement.innerHTML = `<img src="static/img/feather.png" alt="Feather Icon" width="20" height="20"> : ${text}`;
         }
 
         result.appendChild(messageElement);
-        result.scrollTop = result.scrollHeight; 
+        result.scrollTop = result.scrollHeight;
     }
 
     function showLoadingSpinner() {
@@ -211,55 +225,32 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function toggleSpeechRecognition() {
-        const inputLanguage = inputLanguageDropdown.value;
-
         if (!('webkitSpeechRecognition' in window)) {
             alert('Speech recognition is not supported in this browser.');
             return;
         }
 
         if (isRecording) {
-            // Stop the speech recognition
             recognition.stop();
-            microphoneIcon.style.color = ''; // Reset microphone icon color
+            microphoneIcon.style.color = '';
             isRecording = false;
 
-            // Send the accumulated text to backend only if needed
             if (needsToSendText) {
                 sendMessage();
-                needsToSendText = false; // Reset flag
+                needsToSendText = false;
             }
         } else {
-            // Start the speech recognition
             recognition = new webkitSpeechRecognition();
-            recognition.lang = inputLanguage;
-            recognition.interimResults = true; // Allow interim results to be received
-            recognition.maxAlternatives = 1;
+            recognition.lang = inputLanguageDropdown.value;
+            recognition.interimResults = true;
 
             recognition.onstart = () => {
-                console.log('Speech recognition started');
-                microphoneIcon.style.color = 'red'; // Change mic color to red when recording
-                accumulatedText = ''; // Reset accumulated text when starting a new recording
+                microphoneIcon.style.color = 'red';
                 isRecording = true;
-                needsToSendText = false; // Reset flag
             };
 
-            recognition.onresult = (event) => {
-                let finalTranscript = '';
-                for (const result of event.results) {
-                    if (result.isFinal) {
-                        finalTranscript = result[0].transcript;
-                    }
-                }
-                if (finalTranscript) {
-                    accumulatedText = finalTranscript;
-                    appendMessage('User', accumulatedText);
-                    needsToSendText = true; // Set flag to true
-                }
-            };
-
-            recognition.onerror = (event) => {
-                console.error('Speech recognition error:', event.error);
+            recognition.onresult = event => {
+                accumulatedText = Array.from(event.results).map(res => res[0].transcript).join(" ");
             };
 
             recognition.start();
@@ -267,4 +258,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     populateLanguageDropdown();
+
+    document.addEventListener('click', event => {
+        if (event.target.classList.contains('speaker-icon')) {
+            speakText(event.target);
+        }
+    });
 });
