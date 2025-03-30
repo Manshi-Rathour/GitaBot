@@ -229,33 +229,70 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Speech recognition is not supported in this browser.');
             return;
         }
-
+    
         if (isRecording) {
+            console.log("Stopping speech recognition...");
             recognition.stop();
-            microphoneIcon.style.color = '';
+            microphoneIcon.style.color = ''; // Reset to default color
             isRecording = false;
-
-            if (needsToSendText) {
-                sendMessage();
-                needsToSendText = false;
+    
+            if (accumulatedText.trim()) {
+                console.log("User stopped mic, sending text:", accumulatedText);
+                sendMessage(); // Send text when mic is clicked again
             }
         } else {
+            console.log("Starting speech recognition...");
             recognition = new webkitSpeechRecognition();
             recognition.lang = inputLanguageDropdown.value;
             recognition.interimResults = true;
-
+            recognition.continuous = true; // Keep recognizing until user stops it
+    
             recognition.onstart = () => {
+                console.log("Speech recognition started.");
                 microphoneIcon.style.color = 'red';
                 isRecording = true;
             };
-
+    
             recognition.onresult = event => {
-                accumulatedText = Array.from(event.results).map(res => res[0].transcript).join(" ");
+                console.log("Speech recognition result event triggered.");
+                console.log("Raw event results:", event.results);
+    
+                accumulatedText = Array.from(event.results)
+                    .map(res => res[0].transcript)
+                    .join(" ");
+    
+                console.log("Accumulated Text:", accumulatedText);
+                queryInput.value = accumulatedText; // Update input field live
             };
-
+    
+            recognition.onerror = event => {
+                console.error("Speech recognition error:", event.error);
+            };
+    
             recognition.start();
         }
     }
+    
+    function handleSubmitButton() {
+        console.log("Submit button clicked.");
+    
+        // Stop speech recognition if it's running
+        if (isRecording) {
+            console.log("Stopping speech recognition since submit was clicked...");
+            recognition.stop();
+            microphoneIcon.style.color = ''; // Reset mic button color
+            isRecording = false;
+        }
+    
+        // Check if there's text to send
+        if (!queryInput.value.trim() && !accumulatedText.trim()) {
+            console.log("No text to send.");
+            return;
+        }
+    
+        sendMessage();
+    }
+    
 
     populateLanguageDropdown();
 
