@@ -1,9 +1,11 @@
 import nltk
 import random
-from nltk.sentiment import SentimentIntensityAnalyzer
+import os
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-# Uncomment the line below if the VADER lexicon is not already downloaded
-nltk.download('vader_lexicon')
+# Load VADER lexicon from local path instead of downloading
+vader_lexicon_path = "./vader_lexicon/vader_lexicon.txt"
+analyzer = SentimentIntensityAnalyzer(lexicon_file=vader_lexicon_path)
 
 # Predefined quotes for different sentiments
 positive_quotes = [
@@ -63,7 +65,6 @@ neutral_quotes = [
 
 def analyze_sentiment_vader(text):
     """Analyze sentiment using VADER and generate short messages based on predefined quotes."""
-    analyzer = SentimentIntensityAnalyzer()
     sentiment_scores = analyzer.polarity_scores(text)
 
     compound = sentiment_scores['compound']
@@ -71,7 +72,6 @@ def analyze_sentiment_vader(text):
     neu = sentiment_scores['neu']
     pos = sentiment_scores['pos']
 
-    # Determine overall sentiment message
     if compound >= 0.05:
         sentiment_message = "Positive"
     elif compound <= -0.05:
@@ -90,20 +90,18 @@ def generate_short_message(sentiment_message):
         return random.choice(negative_quotes)
     elif sentiment_message == 'Positive':
         return random.choice(positive_quotes)
-    else:  # Neutral sentiment
+    else:
         return random.choice(neutral_quotes)
 
 
 def generate_learning_message(sentiment_message):
     """Generate a learning message based on sentiment."""
     if sentiment_message == 'Negative':
-        learning_message = "Reflect on challenges and remember that every setback is an opportunity to grow stronger. Embrace the lessons learned from difficult experiences."
+        return "Reflect on challenges and remember that every setback is an opportunity to grow stronger. Embrace the lessons learned from difficult experiences."
     elif sentiment_message == 'Positive':
-        learning_message = "Harness your positive energy to set new goals and inspire others. Your optimism can lead to remarkable achievements and influence those around you."
-    else:  # Neutral sentiment
-        learning_message = "Maintain your balance and stay grounded. Use this time to reflect on your progress and plan your next steps with clarity and purpose."
-
-    return learning_message
+        return "Harness your positive energy to set new goals and inspire others. Your optimism can lead to remarkable achievements and influence those around you."
+    else:
+        return "Maintain your balance and stay grounded. Use this time to reflect on your progress and plan your next steps with clarity and purpose."
 
 
 def generate_all_messages():
