@@ -3,9 +3,10 @@ import random
 import os
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-# Load VADER lexicon from local path instead of downloading
-vader_lexicon_path = "./vader_lexicon/vader_lexicon.txt"
-analyzer = SentimentIntensityAnalyzer(lexicon_file=vader_lexicon_path)
+base_dir = os.path.dirname(__file__)
+vader_lexicon_path = os.path.join(base_dir, "vader_lexicon", "vader_lexicon.txt")
+
+analyzer = SentimentIntensityAnalyzer(lexicon_file=f"file:{vader_lexicon_path}")
 
 # Predefined quotes for different sentiments
 positive_quotes = [
