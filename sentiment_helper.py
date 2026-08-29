@@ -3,10 +3,11 @@ import random
 import os
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-base_dir = os.path.dirname(__file__)
+base_dir = os.path.dirname(os.path.abspath(__file__))
 vader_lexicon_path = os.path.join(base_dir, "vader_lexicon", "vader_lexicon.txt")
 
-analyzer = SentimentIntensityAnalyzer(lexicon_file=f"file:{vader_lexicon_path}")
+nltk.data.path.append(base_dir)
+analyzer = SentimentIntensityAnalyzer(lexicon_file="vader_lexicon/vader_lexicon.txt")
 
 # Predefined quotes for different sentiments
 positive_quotes = [
