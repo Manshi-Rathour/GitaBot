@@ -111,13 +111,13 @@ def generate_all_messages():
     example_texts = [
         "I am feeling enlightened after reading the Bhagavad Gita!",
         "I am really frustrated with the way things are going.",
-        "It’s just another day, nothing special.",
+        "It's just another day, nothing special.",
         "Today is a wonderful day full of opportunities!",
         "I can't seem to get anything right today.",
         "I have a lot on my mind but I'm staying calm.",
         "Feeling great about the new project I'm working on!",
         "Facing some challenges, but I believe things will get better.",
-        "I am indifferent to what’s happening around me."
+        "I am indifferent to what's happening around me."
     ]
 
     for text in example_texts:

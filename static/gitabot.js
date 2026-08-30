@@ -9,6 +9,48 @@ let isRecording = false;
 let accumulatedText = '';
 let needsToSendText = false;
 
+// Render a Markdown string to sanitized HTML. Falls back to a plain
+// newline->br conversion if marked/DOMPurify failed to load (e.g. offline).
+function renderMarkdown(text) {
+    if (typeof marked === 'undefined') {
+        return text.replace(/\n/g, '<br>');
+    }
+
+    const rawHtml = marked.parse(text);
+
+    if (typeof DOMPurify !== 'undefined') {
+        return DOMPurify.sanitize(rawHtml);
+    }
+
+    return rawHtml;
+}
+
+
+function typeWriterEffect(container, fullText, { totalSteps = 200, stepDelay = 40 } = {}) {
+    const chunkSize = Math.max(1, Math.ceil(fullText.length / totalSteps));
+    let currentIndex = 0;
+
+    return new Promise(resolve => {
+        const cursor = '<span class="typing-cursor">▍</span>';
+
+        const interval = setInterval(() => {
+            currentIndex = Math.min(currentIndex + chunkSize, fullText.length);
+            const partialText = fullText.slice(0, currentIndex);
+            const isDone = currentIndex >= fullText.length;
+
+            container.innerHTML = renderMarkdown(partialText) + (isDone ? '' : cursor);
+
+            const result = document.getElementById('result');
+            if (result) result.scrollTop = result.scrollHeight;
+
+            if (isDone) {
+                clearInterval(interval);
+                resolve();
+            }
+        }, stepDelay);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const result = document.getElementById('result');
     const queryInput = document.getElementById('queryInput');
@@ -72,17 +114,18 @@ document.addEventListener('DOMContentLoaded', () => {
         appendMessage('User', messageText);
         showLoadingSpinner();
 
+        queryInput.value = '';
+        accumulatedText = '';
+
         try {
             const response = await sendMessageToChatbot(messageText, inputLanguage);
             console.log('Chatbot response:', response);
-            appendMessage('Chatbot', formatChatbotResponse(response));
+            hideLoadingSpinner();
+            await appendChatbotResponse(response);
         } catch (error) {
             console.error('Error in sendMessageToChatbot:', error);
-            appendMessage('Error', `Error: ${error.message}`);
-        } finally {
-            queryInput.value = '';
-            accumulatedText = '';
             hideLoadingSpinner();
+            appendMessage('Error', `Error: ${error.message}`);
         }
     }
 
@@ -119,8 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = element.closest('.formated-response-container');
         if (!container) return;
 
-        const textToSpeak = Array.from(container.querySelectorAll('p'))
-            .map(p => p.innerText.trim())
+        const textToSpeak = Array.from(container.querySelectorAll('p, li, h1, h2, h3, h4, h5, h6'))
+            .map(el => el.innerText.trim())
             .filter(text => text.length > 0)
             .join(" ");
 
@@ -151,43 +194,53 @@ document.addEventListener('DOMContentLoaded', () => {
         return inputLanguage === 'en' ? `<i class="fas fa-volume-up speaker-icon" style="color: gold; cursor: pointer; margin-left: 10px;"></i>` : '';
     }
 
-    
-    function formatChatbotResponse(response) {
-        let formattedResponse = "";
 
-        if (response.general_response) {
-            formattedResponse += `
-                <div class="formated-response-container">
-                    <p>${response.general_response.replace(/\n/g, '<br>')}</p>
-                    ${addSpeakerIcon()}
-                </div>
-            `;
+    // Appends the chatbot's reply to #result and animates the general_response
+    // in with the typewriter effect. The shloka/meaning block (if any) fades
+    // in right after the typing finishes, so it reads like a natural
+    // continuation rather than popping in mid-sentence.
+    async function appendChatbotResponse(response) {
+        const messageElement = document.createElement('div');
+        messageElement.style.padding = '5px';
+        messageElement.id = 'chatbot_area';
+        messageElement.innerHTML = `<img src="static/img/feather.png" alt="Feather Icon" width="20" height="20"> : `;
+
+        const body = document.createElement('span');
+        messageElement.appendChild(body);
+        result.appendChild(messageElement);
+        result.scrollTop = result.scrollHeight;
+
+        const generalText = response.general_response;
+
+        const responseContainer = document.createElement('div');
+        responseContainer.className = generalText ? 'formated-response-container markdown-body' : 'formated-response-container';
+        body.appendChild(responseContainer);
+
+        if (generalText) {
+            await typeWriterEffect(responseContainer, generalText);
+            responseContainer.insertAdjacentHTML('beforeend', addSpeakerIcon());
         } else {
-            formattedResponse += `
-                <div class="formated-response-container">
-                    <p>Sorry, I can't answer this query :(</p>
-                    ${addSpeakerIcon()}
-                </div>
-            `;
+            responseContainer.innerHTML = `<p>Sorry, I can't answer this query :(</p>${addSpeakerIcon()}`;
         }
 
         if (response.id && response.shloka) {
             const [chapter, shlokaNum] = response.id.split('.');
             const formattedChapter = chapter.replace('BG', '');
 
-            formattedResponse += `
-            <div class="formated-response-container">
+            const shlokaContainer = document.createElement('div');
+            shlokaContainer.className = 'formated-response-container shloka-fade-in';
+            shlokaContainer.innerHTML = `
                 <p>Chapter: ${formattedChapter}</p>
                 <p>Shloka: ${shlokaNum}</p>
                 <p>Shloka: ${response.shloka}</p>
                 <p>Hindi Meaning: ${response.hin_meaning || 'N/A'}</p>
                 <p>English Meaning: ${response.eng_meaning || 'N/A'}</p>
                 ${addSpeakerIcon()}
-            </div>
-        `;
+            `;
+            body.appendChild(shlokaContainer);
         }
 
-        return formattedResponse.trim();
+        result.scrollTop = result.scrollHeight;
     }
 
     function appendMessage(role, text) {
@@ -229,13 +282,13 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Speech recognition is not supported in this browser.');
             return;
         }
-    
+
         if (isRecording) {
             console.log("Stopping speech recognition...");
             recognition.stop();
             microphoneIcon.style.color = ''; // Reset to default color
             isRecording = false;
-    
+
             if (accumulatedText.trim()) {
                 console.log("User stopped mic, sending text:", accumulatedText);
                 sendMessage(); // Send text when mic is clicked again
@@ -246,36 +299,36 @@ document.addEventListener('DOMContentLoaded', () => {
             recognition.lang = inputLanguageDropdown.value;
             recognition.interimResults = true;
             recognition.continuous = true; // Keep recognizing until user stops it
-    
+
             recognition.onstart = () => {
                 console.log("Speech recognition started.");
                 microphoneIcon.style.color = 'red';
                 isRecording = true;
             };
-    
+
             recognition.onresult = event => {
                 console.log("Speech recognition result event triggered.");
                 console.log("Raw event results:", event.results);
-    
+
                 accumulatedText = Array.from(event.results)
                     .map(res => res[0].transcript)
                     .join(" ");
-    
+
                 console.log("Accumulated Text:", accumulatedText);
                 queryInput.value = accumulatedText; // Update input field live
             };
-    
+
             recognition.onerror = event => {
                 console.error("Speech recognition error:", event.error);
             };
-    
+
             recognition.start();
         }
     }
-    
+
     function handleSubmitButton() {
         console.log("Submit button clicked.");
-    
+
         // Stop speech recognition if it's running
         if (isRecording) {
             console.log("Stopping speech recognition since submit was clicked...");
@@ -283,16 +336,16 @@ document.addEventListener('DOMContentLoaded', () => {
             microphoneIcon.style.color = ''; // Reset mic button color
             isRecording = false;
         }
-    
+
         // Check if there's text to send
         if (!queryInput.value.trim() && !accumulatedText.trim()) {
             console.log("No text to send.");
             return;
         }
-    
+
         sendMessage();
     }
-    
+
 
     populateLanguageDropdown();
 

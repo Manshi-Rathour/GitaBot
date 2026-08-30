@@ -97,14 +97,6 @@ def get_response():
                         target_language=output_language
                     )['translatedText']
 
-                # Translate the final response back to the input language
-                if input_language != 'en' and output_language != input_language:
-                    chatbot_response = translate_client.translate(
-                        chatbot_response,
-                        source_language=output_language,
-                        target_language=input_language
-                    )['translatedText']
-
                 response = {
                     "status": "success",
                     "general_response": chatbot_response,
