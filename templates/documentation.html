@@ -36,22 +36,34 @@
         <div class="container">
             <h1>GitaBot Documentation</h1>
             
-        
             <!-- Big Container -->
             <div class="big-container">
                 <h2>Introduction</h2>
-                <p>GitaBot is a sophisticated AI-powered chatbot designed to provide guidance and wisdom derived from the sacred teachings of the Bhagavad Gita. By leveraging the latest advancements in natural language processing and sentiment analysis, GitaBot is capable of offering personalized responses that reflect the spiritual and philosophical principles of the Gita. Whether you seek advice on personal matters, philosophical insights, or a deeper understanding of the Gita’s teachings, GitaBot is here to assist, making the timeless wisdom of the Bhagavad Gita accessible to all.</p>
+                <p>GitaBot is an AI-powered chatbot designed to provide guidance and wisdom derived from the sacred teachings of the Bhagavad Gita. By leveraging natural language processing, sentiment analysis, and the Google Cloud Translation API, GitaBot offers personalized responses that reflect the spiritual and philosophical principles of the Gita. Whether you seek advice on personal matters, philosophical insights, or a deeper understanding of the Gita's teachings, GitaBot is here to assist, making the timeless wisdom of the Bhagavad Gita accessible to all, including Hindi speakers.</p>
                 
                 <h2>Features</h2>
                 <ul>
                     <li><strong>Interactive Chatbot:</strong> Engage in real-time, meaningful dialogues with GitaBot, which draws from the Bhagavad Gita to offer advice, clarity, and insights into your queries. GitaBot is designed to respond in a manner consistent with the teachings of Lord Krishna, providing users with guidance that is both relevant and spiritually enriching.</li>
-                    <li><strong>Sentiment Analysis:</strong> GitaBot not only answers your questions but also gauges the emotional tone of your queries. This analysis helps in tailoring responses that resonate with your current emotional state, ensuring that the guidance provided is compassionate and appropriate.</li>
+                    <li><strong>Sentiment Analysis:</strong> GitaBot analyzes the emotional tone of your queries using VADER (Valence Aware Dictionary and sEntiment Reasoner) from NLTK. This analysis helps in tailoring responses that resonate with your current emotional state, ensuring that the guidance provided is compassionate and appropriate.</li>
                     <li><strong>Sentiment-Based Guidance:</strong> Building on the sentiment analysis, GitaBot offers responses that are adapted to the emotional context of the conversation. For example, if a user expresses anxiety or stress, GitaBot may offer calming advice or suggest meditation practices as outlined in the Gita.</li>
-                    <li><strong>Visually Appealing Interface:</strong> Designed with a user-friendly and aesthetically pleasing interface, GitaBot ensures a seamless and enjoyable user experience. The interface, built using Streamlit, offers easy navigation and an immersive interaction that enhances the overall experience.</li>
+                    <li><strong>Multilingual Support:</strong> GitaBot supports English and Hindi. Queries and responses can be translated between languages using the Google Cloud Translation API, preserving markdown structure where applicable.</li>
+                    <li><strong>Visually Appealing Interface:</strong> Designed with a user-friendly and aesthetically pleasing interface, GitaBot ensures a seamless and enjoyable user experience. The interface is built using HTML, CSS, Bootstrap, and JavaScript.</li>
+                    <li><strong>Gita Dataset Lookups:</strong> GitaBot can retrieve specific shlokas, Hindi meanings, and English meanings from the Bhagavad Gita dataset (Bhagwad_Gita.csv) based on identified verse IDs.</li>
+                </ul>
+
+                <h2>How It Works</h2>
+                <ul>
+                    <li>User sends a query in English or Hindi.</li>
+                    <li>If the query is in Hindi, it is translated to English using Google Cloud Translation.</li>
+                    <li>VADER sentiment analysis determines the emotional tone (Positive, Negative, or Neutral).</li>
+                    <li>Groq API (openai/gpt-oss-120b) generates a response based on the query and sentiment.</li>
+                    <li>If applicable, the most relevant Bhagavad Gita shloka is identified and its details (shloka, Hindi meaning, English meaning) are fetched from the dataset.</li>
+                    <li>Sentiment-based short messages and learning messages are generated.</li>
+                    <li>The final response is sent back to the user in their original language.</li>
                 </ul>
 
                 <h2>Usage</h2>
-                <p>GitaBot is designed to be intuitive and easy to use, making it accessible to individuals of all ages and backgrounds. Users can simply type their questions or concerns into the chat interface, and GitaBot will respond with relevant guidance from the Bhagavad Gita. The sentiment analysis feature is automatically activated with each query, providing an additional layer of personalization to the interaction.</p>
+                <p>GitaBot is designed to be intuitive and easy to use. Users can type their questions or concerns into the chat interface. The sentiment analysis feature is automatically activated with each query, providing an additional layer of personalization to the interaction. Users can switch between English and Hindi using the language selector.</p>
 
                 <h2>Prompt Examples</h2>
                 <p><strong>Personal Guidance and Inner Peace</strong></p>
@@ -84,13 +96,10 @@
                 <h2>Applications</h2>
                 <p>GitaBot has broad applications, making it a valuable tool for anyone interested in personal development, spiritual growth, or simply learning more about the Bhagavad Gita. Some potential applications include:</p>
                 <ul>
-                    <li><strong>Self-Reflection and Growth:</strong> Individuals can use GitaBot as a tool for self-reflection, seeking advice on how to handle life’s challenges or how to cultivate virtues such as patience, compassion, and resilience.</li>
-                    <li><strong>Educational Resource:</strong> GitaBot can serve as an educational resource for students and scholars of the Bhagavad Gita, offering explanations of key concepts and answering questions about the text’s teachings.</li>
-                    <li><strong>Spiritual Companion:</strong> For those on a spiritual journey, GitaBot can act as a companion, providing daily guidance and inspiration drawn from the Gita’s teachings.</li>
+                    <li><strong>Self-Reflection and Growth:</strong> Individuals can use GitaBot as a tool for self-reflection, seeking advice on how to handle life's challenges or how to cultivate virtues such as patience, compassion, and resilience.</li>
+                    <li><strong>Educational Resource:</strong> GitaBot can serve as an educational resource for students and scholars of the Bhagavad Gita, offering explanations of key concepts and answering questions about the text's teachings.</li>
+                    <li><strong>Spiritual Companion:</strong> For those on a spiritual journey, GitaBot can act as a companion, providing daily guidance and inspiration drawn from the Gita's teachings.</li>
                 </ul>
-
-                <h2>Future Enhancements</h2>
-                <p>In future iterations, GitaBot aims to include additional features such as multilingual support, enabling users to interact in various languages, and voice interaction capabilities, allowing for a more immersive and accessible experience. These enhancements will further GitaBot’s mission of making the wisdom of the Bhagavad Gita accessible to a global audience.</p>
 
                 <h2>Acknowledgements</h2>
                 <p>We extend our heartfelt gratitude to everyone who has contributed to the development of GitaBot. Your support and feedback are invaluable as we continue to improve and expand the capabilities of this project. Thank you for choosing GitaBot as your guide on the path to spiritual and mental well-being.</p>

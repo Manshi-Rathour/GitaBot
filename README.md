@@ -1,19 +1,15 @@
 # GitaBot
 
 ## Introduction
-Welcome to **GitaBot**, an advanced interactive chatbot designed to impart wisdom and guidance from the timeless teachings of the Bhagavad Gita. By leveraging modern AI and sentiment analysis techniques, GitaBot provides insightful responses to user queries, reflecting the teachings of Lord Krishna. This unique integration of spiritual guidance and technology offers users a profound and personalized experience.
+Welcome to **GitaBot**, an advanced interactive chatbot designed to impart wisdom and guidance from the timeless teachings of the Bhagavad Gita. By leveraging modern AI, sentiment analysis, and the Google Cloud Translation API, GitaBot provides insightful responses to user queries, reflecting the teachings of Lord Krishna. This unique integration of spiritual guidance and technology offers users a profound and personalized experience. GitaBot supports both English and Hindi, making the teachings accessible to a wider audience.
 
 ## Features
 - **Interactive Chatbot**: Engage in meaningful conversations and receive responses rooted in the Bhagavad Gita's wisdom.
-- **Sentiment Analysis**: Analyze the emotional tone of your queries and view sentiment scores in percentages.
-- **Sentiment-Based Guidance**: Experience tailored responses that adapt to the sentiment of your queries.
-- **Visually Appealing Interface**: Enjoy a user-friendly and visually captivating interface designed with Streamlit.
-
-## Upcoming Features
-*The following features are currently in development and will be available in future updates:*
-
-- **Multilingual Interaction**: Interact with GitaBot in multiple languages, making the teachings accessible to a broader audience.
-- **Voice Input Support**: Speak your queries and receive voice-based responses, offering a hands-free and immersive experience.
+- **Sentiment Analysis**: Analyze the emotional tone of your queries and view sentiment scores in percentages using VADER (Valence Aware Dictionary and sEntiment Reasoner) from NLTK.
+- **Sentiment-Based Guidance**: Experience tailored responses that adapt to the sentiment of your queries. GitaBot offers context-aware advice based on whether your query is Positive, Negative, or Neutral.
+- **Multilingual Support**: Interact with GitaBot in English or Hindi. Queries and responses can be translated between languages using the Google Cloud Translation API.
+- **Groq-Powered Responses**: Responses are generated using the Groq API with the `openai/gpt-oss-120b` model.
+- **Visually Appealing Interface**: Enjoy a user-friendly and visually captivating interface built with HTML, CSS, Bootstrap, and JavaScript (Flask-based web interface).
 
 ## Installation
 To utilize GitaBot locally, follow these steps:
@@ -49,23 +45,15 @@ To utilize GitaBot locally, follow these steps:
 5. **Configure API Keys**:
    Set up your API keys in a `.env` file. Create a `.env` file in the root directory and add the following line:
    ```env
-   GOOGLE_GENERATIVE_LANGUAGE_API_KEY=your_api_key_here
+   GROQ_API_KEY=your_groq_api_key_here
    ```
+   *Note: For Hindi translation, GitaBot also uses Google Cloud Translation API. Ensure the credentials file is placed in the project root and referenced in `app.py`.*
 
 6. **Run the Application**:
-   1. **Launch the Streamlit Version**
-      
-      To run the Streamlit app, use the following command:
-      ```bash
-      streamlit run main.py
-      ```
-   
-   3. **Launch the Flask Version**
-      
-      To run the Flask app, use the following command:
-      ```bash
-      python app.py
-      ```
+   To run the Flask app, use the following command:
+   ```bash
+   python app.py
+   ```
 
 ## Prompt Examples
 
@@ -99,5 +87,3 @@ Thank you for choosing GitaBot! We hope you find clarity and wisdom through our 
 
 ## Preview
 - <a href="https://bit.ly/gita-bot" target="_blank">GitaBot</a>
-
-- <a href="https://gita-bot.streamlit.app/" target="_blank">GitaBot on Streamlit</a>
