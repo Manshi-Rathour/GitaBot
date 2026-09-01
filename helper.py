@@ -1,8 +1,8 @@
 import os
+import re
 import pandas as pd
 from dotenv import load_dotenv
 import groq
-import re
 
 load_dotenv()
 
@@ -38,6 +38,11 @@ Query: "{query}"
 My dear child, I understand your concern about "{query}". The Bhagavad Gita teaches us valuable lessons that can guide us in such situations. Remember, think of me as your guide, offering wisdom to illuminate your way forward.
 
 May you find clarity and peace as you reflect on these teachings and navigate your journey.
+
+IMPORTANT FORMATTING RULE: Whenever you refer to a specific verse, never use the internal
+shorthand code format (e.g. "BG2.47", "BG 6.9", "(BG2.47)"). That code is not meant for the
+reader. Instead, always write it out in plain words as "Chapter X, Verse Y" (e.g.
+"Chapter 2, Verse 47"). Do not use the abbreviation "BG" anywhere in your response.
 """
 
 
@@ -51,12 +56,36 @@ def generate_groq_response(prompt):
     except Exception as e:
         raise Exception(f"Error communicating with Groq API: {e}")
 
+
+# Safety net: even with the prompt instruction above, LLMs occasionally slip
+# back into the raw "BGX.Y" citation style. This catches any leftover
+# occurrences and rewrites them into plain, translatable English before the
+# text ever reaches the translation step or the user.
+_BG_CODE_RE = re.compile(r'\(?\s*BG\s*[-\.]?\s*(\d+)\.(\d+)\s*\)?', re.IGNORECASE)
+_GITA_CODE_RE = re.compile(r'Bhagavad[\s-]?Gita\s+(\d+)\.(\d+)', re.IGNORECASE)
+
+
+def humanize_verse_citations(text):
+    """Replace any raw 'BGX.Y' / 'Bhagavad Gita X.Y' style citation in
+    user-facing text with a plain 'Chapter X, Verse Y' phrase, so it reads
+    naturally in English and translates cleanly into Hindi (avoids Google
+    Translate transliterating 'BG' into 'बीजी')."""
+    if not text:
+        return text
+
+    text = _BG_CODE_RE.sub(lambda m: f"Chapter {m.group(1)}, Verse {m.group(2)}", text)
+    text = _GITA_CODE_RE.sub(lambda m: f"Bhagavad Gita, Chapter {m.group(1)}, Verse {m.group(2)}", text)
+    return text
+
+
 def generate_response(query, use_dataset=True):
     # Generate general response
     general_response = generate_groq_response(prompt_template_general.format(query=query))
+    general_response = humanize_verse_citations(general_response)
 
     if use_dataset:
-        # Generate response with Shloka ID
+        # Generate response with Shloka ID (this one is for internal lookup
+        # only — its raw "BGX.Y" format is never shown to the user directly)
         dataset_response = generate_groq_response(prompt_template_with_id.format(query=query))
 
         # Extract the first valid ID from response using regular expression
@@ -111,6 +140,7 @@ def generate_response(query, use_dataset=True):
             "hin_meaning": "",
             "eng_meaning": ""
         }
+
 
 if __name__ == "__main__":
     query = "How can I find inner peace?"

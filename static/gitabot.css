@@ -1,18 +1,14 @@
 body {
     font-family: 'Arial', sans-serif;
     background-image: url('img/bg.png');
-    /* background-color: #212529; */
-    background-size: cover; 
-    /* background-repeat: no-repeat;  */
-    background-position: center; 
+    background-size: cover;
+    background-position: center;
 }
-
-
 
 /* Gitabot */
 
 body .chatbot-section {
-    margin-top: 90px; 
+    margin-top: 90px;
 }
 
 body .chatbot-section #searches {
@@ -56,7 +52,6 @@ body .chatbot-section #result {
     border-radius: 5px;
     padding: 10px;
     margin-top: 10px;
-    /* background-color: #101010; */
     color: white;
 }
 
@@ -188,6 +183,24 @@ body .chatbot-section #result {
     to { opacity: 1; }
 }
 
+/* Better rendering for Devanagari script responses */
+.formated-response-container.lang-hi {
+    font-family: 'Noto Sans Devanagari', 'Arial', sans-serif;
+    line-height: 1.9;
+    font-size: 1.05rem;
+}
+
+.formated-response-container.lang-hi .shloka-text {
+    color: #f0d98c;
+    font-size: 1.1rem;
+}
+
+.markdown-body.lang-hi h1,
+.markdown-body.lang-hi h2,
+.markdown-body.lang-hi h3 {
+    font-family: 'Noto Sans Devanagari', 'Arial', sans-serif;
+}
+
 #user-query {
     margin-top: 10px;
     margin-bottom: 10px;
@@ -198,7 +211,7 @@ body .chatbot-section #result {
 .input-group-prepend {
     display: flex;
     align-items: center;
-    padding-right: 10px; 
+    padding-right: 10px;
 }
 
 .input-group-prepend .input-group-text {
@@ -219,7 +232,7 @@ body .chatbot-section #result {
 }
 
 #queryInput {
-    border: 1px solid gold; 
+    border: 1px solid gold;
     color: white;
     background-color: #101010;
     flex: 1;
@@ -229,7 +242,6 @@ body .chatbot-section #result {
 #queryInput::placeholder {
     color: rgb(183, 183, 183);
 }
-
 
 #user_area {
     border-radius: 5px;
@@ -252,40 +264,39 @@ body .chatbot-section #result {
 
 #submitButton {
     background-color: gold;
-    color: black; 
-    cursor: pointer; 
+    color: black;
+    cursor: pointer;
 }
 
 #submitButton:hover {
     background-color: rgb(254, 181, 46);
 }
 
-
 /* Container for Language Selection Dropdown */
 .language-selection-container {
-    margin-top: 20px; 
-    padding: 10px;   
-    border: 1px solid gold; 
-    border-radius: 5px; 
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid gold;
+    border-radius: 5px;
     background-color: #101010;
 }
 
 /* Label for the Dropdown */
 .language-selection-container label {
-    font-size: 16px; 
-    font-weight: bold; 
-    color: white; 
-    margin-bottom: 5px; 
-    display: block; 
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 5px;
+    display: block;
 }
 
 /* Dropdown Styling */
 .language-selection-container select {
-    width: 100%; 
-    padding: 10px; 
+    width: 100%;
+    padding: 10px;
     border: 1px solid gold;
-    border-radius: 5px; 
-    background-color: #101010; 
+    border-radius: 5px;
+    background-color: #101010;
     font-size: 16px;
     color: white;
 }
@@ -296,6 +307,6 @@ body .chatbot-section #result {
     color: white;
 }
 
-#inputLanguageDropdown{
+#inputLanguageDropdown {
     cursor: pointer;
 }
